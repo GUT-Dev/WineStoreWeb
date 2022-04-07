@@ -1,0 +1,4 @@
+.wines {
+    display: flex;
+    flex-direction: row;
+}

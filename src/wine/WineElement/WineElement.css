@@ -1,0 +1,36 @@
+.wine-element {
+    display: flex;
+    flex-direction: column;
+}
+
+.wine-element-item {
+    display: flex;
+    flex-direction: row;
+    height: 400px;
+}
+
+.img {
+    width: 50%;
+    border: black 1px solid;
+}
+
+.descriptions {
+    width: 50%;
+    padding: 0 15px;
+}
+
+#wine-name {
+    text-align: center;
+}
+
+#wine-price {
+    text-align: right;
+    margin-right: 20px;
+}
+
+.additional-info {
+    margin: 10px 0;
+    padding: 15px;
+    height: 200px;
+    border: red 1px solid;
+}
