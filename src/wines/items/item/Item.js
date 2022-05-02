@@ -34,7 +34,7 @@ export default class Item extends Component {
             <div className="item-box">
                 <Link className="item" to={WINE_PATH + this.state.id}>
                     <img className="item-img" src={checkImg(this.state.img)} alt="wine icon" />
-                    <div className="descriptions">
+                    <div className="item-descriptions">
                         <h4 className="item-name">{this.state.name}</h4>
                         <p className="price">{this.state.price} грн</p>
                     </div>

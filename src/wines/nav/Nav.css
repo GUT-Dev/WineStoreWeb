@@ -1,5 +1,24 @@
 .nav {
-    width: 750px;
+    width: 60%;
     margin: 0;
+    padding: 5px;
     border: red 1px solid;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-block {
+    width: inherit;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-header {
+
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: row;
 }

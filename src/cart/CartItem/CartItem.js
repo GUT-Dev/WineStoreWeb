@@ -34,7 +34,6 @@ export default class CartItem extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <Link className="cart-item" to={WINE_PATH + this.state.wine.id}>

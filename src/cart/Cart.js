@@ -43,7 +43,6 @@ export default class Cart extends Component {
     }
 
     render() {
-        console.log("render")
         const {error, isLoaded, item} = this.state;
         if (error) {
             return (<p> Error {error.message}</p>)

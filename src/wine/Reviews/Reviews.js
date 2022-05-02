@@ -19,6 +19,10 @@ export default class Reviews extends Component {
     }
 
     componentDidMount() {
+        this.getReviews();
+    }
+
+    getReviews() {
         axios.get(REVIEWS_PATH + this.state.id)
             .then(res => res.data)
             .then(
@@ -46,6 +50,7 @@ export default class Reviews extends Component {
     }
 
     render() {
+        console.log("RENDER!!!")
         const {error, isLoaded, items} = this.state;
         if (error) {
             return (<p> Error {error.message}</p>)
@@ -58,7 +63,7 @@ export default class Reviews extends Component {
                     {items.map(item =>
                         <Review item={item} key={item.id}/>
                     )}
-                    <AddReview />
+                    <AddReview id={this.state.id} update={this.getReviews.bind(this)}/>
                 </div>
             );
         }
