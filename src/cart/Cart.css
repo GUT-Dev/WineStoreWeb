@@ -1,0 +1,19 @@
+.cart-main {
+
+}
+
+.cart-items {
+    width: 900px;
+    margin: auto;
+}
+
+.cart-total {
+    width: 300px;
+    margin: 40px 20px 20px 600px;
+}
+
+.cart-button {
+    height: 30px;
+    width: 100px;
+    margin-left: 50px;
+}

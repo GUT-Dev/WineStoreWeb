@@ -2,4 +2,18 @@ header {
     width: inherit;
     height: 100px;
     background-color: gold;
+    display: flex;
+    flex-direction: row;
+}
+
+.header-home {
+    font-size: 25px;
+    color: black;
+    margin-left: 25px;
+}
+
+.header-cart {
+    font-size: 25px;
+    color: black;
+    margin-left: 1000%;
 }

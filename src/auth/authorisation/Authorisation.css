@@ -1,0 +1,32 @@
+.auth-main {
+    margin: 100px auto;
+}
+
+#auth-header {
+    margin: 50px;
+    text-align: center;
+}
+
+.auth-form {
+    width: 310px;
+    margin: 0 auto;
+}
+
+.auth-form div {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form div input {
+    width: 250px;
+    height: 20px;
+    border: 1px black solid;
+    border-radius: 5px;
+}
+
+.auth-form button {
+    width: 100px;
+    height: 25px;
+    margin-left: 100px;
+}

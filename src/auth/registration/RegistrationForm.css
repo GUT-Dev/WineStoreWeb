@@ -1,0 +1,36 @@
+.reg-main {
+    margin: 100px 0;
+}
+
+#reg-header {
+    margin: 40px;
+    text-align: center;
+}
+
+.reg-form {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.reg-form button {
+    width: 100px;
+    height: 25px;
+    margin-left: 350px;
+}
+
+.reg-item {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reg-item input {
+    width: 300px;
+    height: 20px;
+    border: 1px black solid;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+}

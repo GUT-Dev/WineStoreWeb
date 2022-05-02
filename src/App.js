@@ -6,6 +6,9 @@ import React, {Component} from "react";
 import Wine from "./wine/Wine";
 import {Route, useParams} from "react-router-dom";
 import {Routes} from "react-router";
+import RegistrationForm from "./auth/registration/RegistrationForm";
+import Authorisation from "./auth/authorisation/Authorisation";
+import Cart from "./cart/Cart";
 
 export default class App extends Component {
 
@@ -16,6 +19,9 @@ export default class App extends Component {
                 <Routes>
                     <Route path={"/"} element={<Wines />} />
                     <Route path={"/wine/:id"} element={<WineEl />} />
+                    <Route path={"/registration"} element={<RegistrationForm />} />
+                    <Route path={"/auth"} element={<Authorisation />} />
+                    <Route path={"/cart"} element={<Cart />} />
                 </Routes>
                 <Footer/>
             </div>

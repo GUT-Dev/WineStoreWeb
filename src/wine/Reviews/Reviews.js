@@ -37,6 +37,14 @@ export default class Reviews extends Component {
             )
     }
 
+    reviewHeader() {
+        if (this.state.items.length > 0) {
+            return <h2 id="reviews-item-name">Відгуки:</h2>;
+        } else {
+            return <h2 id="reviews-item-name">Додай відгук першим</h2>;
+        }
+    }
+
     render() {
         const {error, isLoaded, items} = this.state;
         if (error) {
@@ -46,7 +54,7 @@ export default class Reviews extends Component {
         } else {
             return (
                 <div className="reviews">
-                    <h2 id="reviews-item-name">Відгуки:</h2>
+                    {this.reviewHeader()}
                     {items.map(item =>
                         <Review item={item} key={item.id}/>
                     )}
