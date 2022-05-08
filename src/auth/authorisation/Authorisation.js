@@ -26,14 +26,14 @@ const Authorisation = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        //
+        // await axios.post(AUTH_PATH, loginValues)
+        //     .then(res =>
+        //         dispatch({type: "LOGIN", payload: res.data})
+        //     )
+        // console.log(authDetails)
 
-        await axios.post(AUTH_PATH, loginValues)
-            .then(res =>
-                dispatch({type: "LOGIN", payload: res.data})
-            )
-        console.log(authDetails)
-
-        await axios.get(PRINCIPAL_PATH, {headers: {Authorization: 'Bearer ' + authDetails.jwtToken}})
+        axios.get(PRINCIPAL_PATH, {headers: {Authorization: 'Bearer ' + authDetails.jwtToken}})
             .then(res =>
                 dispatch({type:"SET_USER", payload: res.data})
             )
@@ -55,8 +55,6 @@ const Authorisation = () => {
                 </div>
 
                 <button onClick={handleSubmit}>Підтвердити</button>
-                <h1>authorised: {authDetails.jwtToken}</h1>
-                {/*<h1>user: {authDetails.user}</h1>*/}
             </form>
         </div>
     )

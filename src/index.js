@@ -10,11 +10,12 @@ import {composeWithDevTools} from "redux-devtools-extension";
 
 const defaultState = {
     authorised: false,
-    jwtToken: null,
+    jwtToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi50ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTY1MzMzOTYwMH0._8S2afQZzeCLTZJyjdddS3fVRcPK6dJYQoRxCuJnvzV4MIoCxzRlfZ8oUQSHhwNV3Y35vmyTLBEeFjSTKFVGpQ',
     user: {
         id: null,
         firstName: null,
         lastName: null,
+        roles: []
     },
     searchByName: null,
 }

@@ -1,0 +1,21 @@
+.manager-panel-main {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.add-wine {
+    padding: 3px;
+    font-size: 1.3em;
+    cursor: pointer;
+    margin: 8px 0 8px 30px;
+    height: 24px;
+}
+
+.manager-panel-header {
+    font-size: 1.5em;
+    margin-right: 20px;
+    margin-top: 8px;
+}
