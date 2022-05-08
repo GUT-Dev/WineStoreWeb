@@ -13,9 +13,10 @@
 }
 
 .reg-form button {
-    width: 100px;
-    height: 25px;
+    width: 130px;
+    height: 32px;
     margin-left: 350px;
+    border-radius: 16px;
 }
 
 .reg-item {

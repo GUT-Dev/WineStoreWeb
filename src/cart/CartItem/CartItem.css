@@ -1,7 +1,7 @@
 .cart-item {
+    position: relative;
     display: flex;
     flex-direction: row;
-    border: red 1px solid;
     margin-top: 30px;
 }
 
@@ -9,7 +9,6 @@
     width: 250px;
     height: 250px;
     margin: 15px;
-    border: black 1px solid;
     object-fit: cover;
 }
 
@@ -30,5 +29,14 @@
 }
 
 .cart-item-remove {
-    margin-left: 800px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.cart-item-remove img {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    margin: 8px;
 }

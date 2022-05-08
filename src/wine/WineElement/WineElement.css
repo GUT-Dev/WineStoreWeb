@@ -11,27 +11,53 @@
 
 .img {
     width: 50%;
-    border: black 1px solid;
+    /*border: black 1px solid;*/
     object-fit: cover;
+    border: none;
+    border-radius: 8px;
 }
 
 .descriptions {
+    position: relative;
     width: 50%;
     padding: 0 15px;
+    border: gray 2px solid;
+    border-radius: 8px;
+    margin-left: 8px;
 }
 
 #wine-name {
     text-align: center;
 }
 
-#wine-price {
+.old-price {
+    margin: 0 10px 0 0;
     text-align: right;
-    margin-right: 20px;
+    color: gray;
+    text-decoration: line-through;
+    font-size: 1em;
+}
+
+.wine-price {
+    margin: 0;
+    text-align: right;
+    font-size: 1.5em;
 }
 
 .additional-info {
     margin: 10px 0;
     padding: 15px;
     height: 200px;
-    border: red 1px solid;
+}
+
+.price-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100px;
+    right: 0;
+    bottom: 0;
+    margin: 10px;
+    justify-content: flex-end;
 }

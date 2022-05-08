@@ -1,48 +1,65 @@
 import './Authorisation.css';
-import {Component} from "react";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 
 const BASE_PATH = "http://localhost:8080"
-const ELEMENT_PATH = BASE_PATH + "/auth"
+const AUTH_PATH = BASE_PATH + "/auth"
+const PRINCIPAL_PATH = BASE_PATH + "/principal"
 
-export default class Authorisation extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: ''
-        }
+const Authorisation = () => {
+    const dispatch = useDispatch()
+    const authDetails = useSelector(state => state)
+    let [loginValues, setLoginValues] = useState({
+        email: '',
+        password: ''
+    });
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+    const handleChange = (event) => {
+        setLoginValues(value => {
+            return {
+                ...value,
+                [event.target.id]: event.target.value
+            }
+        })
     }
 
-    handleSubmit(event) {
-        console.log("send")
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post(ELEMENT_PATH, {
-            email: this.state.email,
-            password: this.state.password
-        }).then(res => this.state.status = res.status)
+
+        await axios.post(AUTH_PATH, loginValues)
+            .then(res =>
+                dispatch({type: "LOGIN", payload: res.data})
+            )
+        console.log(authDetails)
+
+        await axios.get(PRINCIPAL_PATH, {headers: {Authorization: 'Bearer ' + authDetails.jwtToken}})
+            .then(res =>
+                dispatch({type:"SET_USER", payload: res.data})
+            )
+        console.log(authDetails)
     }
 
-    render() {
-        return (
-            <div className="auth-main">
-                <h1 id="auth-header">Авторизація</h1>
-                <form className="auth-form">
-                    <div>
-                        <label>Електронна пошта</label>
-                        <input type="text" id="email"/>
-                    </div>
+    return (
+        <div className="auth-main">
+            <h1 id="auth-header">Авторизація</h1>
+            <form className="auth-form">
+                <div>
+                    <label>Електронна пошта</label>
+                    <input type="text" id="email" value={loginValues.email} onChange={handleChange}/>
+                </div>
 
-                    <div>
-                        <label>Пароль</label>
-                        <input type="password" id="password"/>
-                    </div>
+                <div>
+                    <label>Пароль</label>
+                    <input type="password" id="password" value={loginValues.password} onChange={handleChange}/>
+                </div>
 
-                    <button type="submit">Підтвердити</button>
-                </form>
-            </div>
-        )
-    }
+                <button onClick={handleSubmit}>Підтвердити</button>
+                <h1>authorised: {authDetails.jwtToken}</h1>
+                {/*<h1>user: {authDetails.user}</h1>*/}
+            </form>
+        </div>
+    )
 }
+
+export default Authorisation;

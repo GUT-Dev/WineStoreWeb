@@ -1,8 +1,10 @@
 import './Item.css';
 import {Component} from "react";
 import {Link} from "react-router-dom";
-import checkImg from "../../../util/DefaultImg";
+import checkImg from "../../../utils/DefaultImg";
 import axios from "axios";
+
+const ADD_TO_CART_ICON = "https://cdn-icons.flaticon.com/png/512/5412/premium/5412718.png?token=exp=1651882401~hmac=afe6b60da29d5a7347ddadf003c8cb31";
 
 const WINE_PATH = "/wine/"
 
@@ -29,6 +31,23 @@ export default class Item extends Component {
             .finally()
     }
 
+    getPrice() {
+        if(this.state.discount === 0) {
+            return (
+                <div className="item-price-container">
+                    <p className="item-price price">{this.state.price} грн</p>
+                </div>
+            );
+        } else {
+            return (
+                <div className="item-price-container">
+                    <h3 className="item-old-price"> {this.state.price}</h3>
+                    <p className="item-price sale">{this.state.priceWithSale} грн</p>
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
             <div className="item-box">
@@ -36,10 +55,12 @@ export default class Item extends Component {
                     <img className="item-img" src={checkImg(this.state.img)} alt="wine icon" />
                     <div className="item-descriptions">
                         <h4 className="item-name">{this.state.name}</h4>
-                        <p className="price">{this.state.price} грн</p>
+                        {this.getPrice()}
                     </div>
                 </Link>
-                <button className="item-button" onClick={this.addToCart}>Додати в кошик</button>
+                <div className="item-button" onClick={this.addToCart}>
+                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
+                </div>
             </div>
         );
     }

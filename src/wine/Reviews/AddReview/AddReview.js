@@ -29,8 +29,9 @@ const AddReview = (props) => {
     }
 
     return (
-        <div className="add-review-main">
-            <textarea className="add-review-textarea" onChange={(e) => setReview(e.target.value)}>{review}</textarea>
+        <div className="add-review-main box">
+            <h3 className="add-review-header">Додати відгук</h3>
+            <textarea maxLength="180" className="add-review-textarea" onChange={(e) => setReview(e.target.value)}>{review}</textarea>
             <div className="add-review-buttons">
                 <div className="rating-holder">
                     <div className="c-rating c-rating--small" data-rating-value={rating}>

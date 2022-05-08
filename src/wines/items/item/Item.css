@@ -1,9 +1,11 @@
 .item-box {
+    position: relative;
     padding: 10px;
-    margin: 10px;
+    margin: 5px;
     width: 265px;
     height: 380px;
-    border: blue 1px solid;
+    border: gray 2px solid;
+    border-radius: 8px;
 }
 
 .item {
@@ -18,7 +20,6 @@
 .item-img {
     width: 265px;
     height: 265px;
-    border: black 1px solid;
     object-fit: cover;
 }
 
@@ -27,11 +28,33 @@
     height: 170px;
 }
 
+.item-price {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.item-old-price {
+    color: gray;
+    text-decoration: line-through;
+    font-size: 0.9em;
+    margin: 0;
+}
+
 .item-button {
-    position: relative;
-    bottom: 30px;
-    left: 150px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     cursor: pointer;
-    width: 115px;
-    height: 30px;
+    border: none;
+}
+
+.item-button img {
+    width: 35px;
+    height: 35px;
+}
+
+.item-price-container {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
 }

@@ -2,6 +2,7 @@ import './Wines.css';
 import Items from "./items/Items";
 import Nav from "./nav/Nav";
 import {useState} from "react";
+import {useSelector} from "react-redux";
 
 export const sweetnessTypes = [ "EXTRA_DRY", "DRY", "MEDIUM", "SWEET", "VERY_SWEET" ];
 export const wineTypes = [ "WHITE", "RED", "ROSE", "SPARKLING", "FORTIFIED" ];
@@ -13,8 +14,21 @@ const Wines = () => {
         price: {
             min: 0,
             max: 10000
-        }
+        },
     });
+    let searchByName = useSelector(state => state.searchByName);
+
+    const submit = (value) => {
+        setFilters(filters => {
+            return {
+                ...filters,
+                price: {
+                    min: value.min,
+                    max: value.max
+                }
+            }
+        })
+    }
 
     const changeFilter = (param) => {
         if(param.checked) {
@@ -65,32 +79,29 @@ const Wines = () => {
     }
 
     const crateQueryParams = (filters) => {
-        let priceParam = 'minPrice=' + filters.price.min + '&maxPrice=' + filters.price.max;
-        let sweetnessParam = null;
-        let typeParam = null;
+        let queryParams = '?'
 
+        if(searchByName != null) {
+            queryParams = queryParams.concat('name=' + searchByName + '&')
+        }
         if(filters.sweetness.length > 0) {
-            sweetnessParam = '&sweetness=' + filters.sweetness;
+            queryParams = queryParams.concat('sweetness=' + filters.sweetness + '&');
         }
-
         if(filters.type.length > 0) {
-            typeParam = '&type=' + filters.type;
+            queryParams = queryParams.concat('&type=' + filters.type + '&');
+        }
+        if(filters.price.min != null && filters.price.max != null) {
+            queryParams = queryParams.concat('minPrice=' + filters.price.min + '&maxPrice=' + filters.price.max + '&')
         }
 
-        if(sweetnessParam != null && typeParam != null) {
-            return '?' + priceParam + sweetnessParam + typeParam
-        } else if(sweetnessParam != null) {
-            return '?' + priceParam + sweetnessParam
-        } else if(typeParam != null) {
-            return '?' + priceParam + typeParam
-        } else {
-            return '?' + priceParam
-        }
+        return queryParams.length > 1
+            ? queryParams.substr(0, queryParams.length - 1)
+            : queryParams;
     }
 
     return (
         <div className="wines">
-            <Nav changeFilter={changeFilter}/>
+            <Nav changeFilter={changeFilter} price={filters.price} submit={submit}/>
             <Items filters={crateQueryParams(filters)}/>
         </div>
     );

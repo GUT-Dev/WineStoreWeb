@@ -1,19 +1,69 @@
 header {
     width: inherit;
-    height: 100px;
-    background-color: gold;
+    height: 80px;
     display: flex;
     flex-direction: row;
+    margin-bottom: 5px;
+    position: relative;
 }
 
-.header-home {
-    font-size: 25px;
-    color: black;
-    margin-left: 25px;
+.header-logo {
+    margin: 5px 15px;
+    height: 70px;
+    width: auto;
 }
 
-.header-cart {
-    font-size: 25px;
-    color: black;
-    margin-left: 1000%;
+.header-cart-account-img {
+    position: absolute;
+    right: 80px;
+}
+
+.header-cart-img {
+    position: absolute;
+    right: 0;
+}
+
+.cart-icon {
+    height: 34px;
+    width: 34px;
+    margin: 23px
+}
+
+.search-container {
+    height: 38px;
+    width: 386px;
+    display: flex;
+    flex-direction: row;
+    margin: 18px 0 22px 250px;
+    border: #ff5000 2px solid;
+    border-radius: 25px;
+    padding: 0;
+}
+
+.search-input {
+    margin: 0;
+    height: 35px;
+    width: 350px;
+    background: none;
+    border: none;
+    font-size: 1em;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-icon {
+    height: 35px;
+    width: 36px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.search-icon img {
+    height: 25px;
+    width: 25px;
+    margin: 5px 10px 5px 0;
 }

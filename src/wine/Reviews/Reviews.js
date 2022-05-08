@@ -50,7 +50,6 @@ export default class Reviews extends Component {
     }
 
     render() {
-        console.log("RENDER!!!")
         const {error, isLoaded, items} = this.state;
         if (error) {
             return (<p> Error {error.message}</p>)
@@ -58,7 +57,7 @@ export default class Reviews extends Component {
             return (<p> Зфгрузка....</p>)
         } else {
             return (
-                <div className="reviews">
+                <div className="reviews box">
                     {this.reviewHeader()}
                     {items.map(item =>
                         <Review item={item} key={item.id}/>

@@ -10,8 +10,11 @@
   width: 600px;
   min-height: 70px;
   font-size: 15px;
-  background-color: gray;
-  margin: 10px;
+  margin: 8px;
+  padding: 5px;
+  border: gray 1px solid;
+  border-radius: 8px;
+  resize: none;
 }
 
 .add-review-buttons {
@@ -25,8 +28,11 @@
   width: 120px;
   height: 35px;
   margin-left: 310px;
-  border: none;
   border-radius: 20px;
+}
+
+.add-review-header {
+  margin-left: 20px;
 }
 
 $rating-min-value: 0 !default;
@@ -137,7 +143,8 @@ $rating-icons-paths: (
   display: inline-block;
   padding: toem(10px) toem(30px);
   margin: 0 10px;
-  background-color: #fff;
+  background-color: #f1f1f1;
+  border: #ff5000 1px solid;
   border-radius: toem(25px);
   box-sizing: border-box;
 }

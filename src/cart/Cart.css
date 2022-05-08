@@ -15,5 +15,6 @@
 .cart-button {
     height: 30px;
     width: 100px;
-    margin-left: 50px;
+    margin-left: 180px;
+    border-radius: 15px;
 }

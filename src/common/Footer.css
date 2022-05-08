@@ -1,5 +1,20 @@
 footer {
+    padding: 5px;
     width: inherit;
-    height: 100px;
-    background-color: green;
+    height: 110px;
+    margin-top: 8px;
+    background-color: #ababab;
+}
+
+.footer-item {
+    font-size: 0.8em;
+    text-decoration: none;
+    text-align: center;
+}
+
+.footer-item-link {
+    font-size: 0.7em;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: underline;
 }

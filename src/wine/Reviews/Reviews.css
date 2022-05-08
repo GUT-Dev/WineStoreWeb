@@ -1,6 +1,5 @@
 .reviews {
     margin: 10px 0;
-    border: blue 1px solid;
     flex-direction: column;
 }
 

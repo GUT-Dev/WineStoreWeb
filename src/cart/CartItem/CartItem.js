@@ -1,8 +1,10 @@
 import './CartItem.css';
 import {Component} from "react";
 import {Link} from "react-router-dom";
-import checkImg from "../../util/DefaultImg";
+import checkImg from "../../utils/DefaultImg";
 import axios from "axios";
+
+const REMOVE_ICON = "https://cdn-icons.flaticon.com/png/512/3156/premium/3156999.png?token=exp=1651946297~hmac=8af074c78fb677dbcab2a21280293907";
 
 const WINE_PATH = "/wine/"
 const BASE_PATH = "http://localhost:8080"
@@ -35,18 +37,20 @@ export default class CartItem extends Component {
 
     render() {
         return (
-            <div>
-                <Link className="cart-item" to={WINE_PATH + this.state.wine.id}>
+            <div className="cart-item box">
+                <div className="cart-item-remove" onClick={this.removeFromCart}>
+                    <img src={REMOVE_ICON} alt="Remove icon"/>
+                </div>
+                <Link to={WINE_PATH + this.state.wine.id}>
                     <img className="cart-item-img" src={checkImg(this.state.wine.img)} alt="wine icon"/>
-                    <div className="cart-item-descriptions">
-                        <h4 className="cart-item-name">{this.state.wine.name}</h4>
-                        <p className="cart-item-price"> Ціна за 1шт: {this.state.wine.priceWithSale} грн</p>
-                        <p>Кількість: {this.state.amount}</p>
-                        {this.buy()}
-                        <p className="cart-item-price">Загальна ціна: {this.state.wine.priceWithSale * this.state.amount} грн</p>
-                    </div>
                 </Link>
-                <button className="cart-item-remove" onClick={this.removeFromCart}>Видалити</button>
+                <div className="cart-item-descriptions">
+                    <h4 className="cart-item-name">{this.state.wine.name}</h4>
+                    <p className="cart-item-price"> Ціна за 1шт: {this.state.wine.priceWithSale} грн</p>
+                    <p>Кількість: {this.state.amount}</p>
+                    {this.buy()}
+                    <p className="cart-item-price">Загальна ціна: {this.state.wine.priceWithSale * this.state.amount} грн</p>
+                </div>
             </div>
         )
     }

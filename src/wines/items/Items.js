@@ -10,6 +10,7 @@ export default ({filters}) => {
     let [items, setItems] = useState([])
     useEffect(
         () => {
+            console.log("search")
             axios.get(ELEMENT_PATH + filters)
                 .then(
                     (result) => {
