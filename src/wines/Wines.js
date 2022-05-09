@@ -88,7 +88,7 @@ const Wines = () => {
             queryParams = queryParams.concat('sweetness=' + filters.sweetness + '&');
         }
         if(filters.type.length > 0) {
-            queryParams = queryParams.concat('&type=' + filters.type + '&');
+            queryParams = queryParams.concat('type=' + filters.type + '&');
         }
         if(filters.price.min != null && filters.price.max != null) {
             queryParams = queryParams.concat('minPrice=' + filters.price.min + '&maxPrice=' + filters.price.max + '&')

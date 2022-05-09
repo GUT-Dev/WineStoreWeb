@@ -14,22 +14,3 @@ body {
   width: 1200px;
   margin: auto;
 }
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.box {
-  border: gray 2px solid;
-  border-radius: 8px;
-}
-
-.price {
-  font-weight: bold;
-}
-
-.sale {
-  color: #f84147;
-  font-weight: bold;
-}

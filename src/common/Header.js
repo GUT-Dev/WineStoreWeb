@@ -26,7 +26,6 @@ const Header = () => {
 
     const onClick = () => {
         dispatch({type: "ADD_SEARCH_PARAM", payload: search});
-        navigate("/", { replace: true, search: search })
         redirect();
     }
 
@@ -43,28 +42,37 @@ const Header = () => {
 
     const redirect = () => {
         if (location.pathname !== "/") {
-            navigate("/", { replace: true })
+            navigate("/")
         }
     }
 
+    const logout = () => {
+        dispatch({type: "LOGOUT"})
+        navigate("/");
+    }
+
     return (
-        <header className="box">
-            <Link to="/">
-                <img className="header-logo" alt="Header logo" src={logo}/>
-            </Link>
-            <div className="search-container">
-                <input value={search} className="search-input" onChange={onChange} onKeyPress={pressEnter}/>
-                <div className="search-icon" onClick={onClick}>
-                    <img src={SEARCH_ICON} alt="Search icon"/>
+        <div>
+            <div>User: {authDetails.user.id + ' ' + authDetails.user.firstName}</div>
+            <div>Token: {authDetails.jwtToken}</div>
+            <header className="box">
+                <Link to="/">
+                    <img className="header-logo" alt="Header logo" src={logo}/>
+                </Link>
+                <div className="search-container">
+                    <input value={search} className="search-input" onChange={onChange} onKeyPress={pressEnter}/>
+                    <div className="search-icon" onClick={onClick}>
+                        <img src={SEARCH_ICON} alt="Search icon"/>
+                    </div>
                 </div>
-            </div>
-            <Link to={getAccountLink()}>
-                <img className="header-cart-account-img cart-icon" src={ACCOUNT_ICON} alt="cart_icon"/>
-            </Link>
-            <Link to="/cart">
-                <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
-            </Link>
-        </header>
+                <Link to={getAccountLink()}>
+                    <img className="header-cart-account-img cart-icon" src={ACCOUNT_ICON} alt="cart_icon"/>
+                </Link>
+                <Link to="/cart">
+                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
+                </Link>
+            </header>
+        </div>
     );
 }
 

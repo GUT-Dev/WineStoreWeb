@@ -7,19 +7,27 @@
     display: flex;
     flex-direction: row;
     height: 400px;
+    justify-content: space-between;
 }
 
-.img {
+.wine-img-container {
     width: 50%;
-    /*border: black 1px solid;*/
-    object-fit: cover;
     border: none;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wine-img {
+    max-width: inherit;
+    max-height: inherit;
+    object-fit: cover;
 }
 
 .descriptions {
-    position: relative;
     width: 50%;
+    position: relative;
     padding: 0 15px;
     border: gray 2px solid;
     border-radius: 8px;

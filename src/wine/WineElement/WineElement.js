@@ -63,7 +63,9 @@ export default class WineElement extends Component {
             return (
                 <div className="wine-element">
                     <div className="wine-element-item">
-                        <img className="img" src={checkImg(item.img)} alt="wine logo"/>
+                        <div className="wine-img-container">
+                            <img className="-wine-img" src={checkImg(item.img)} alt="wine logo"/>
+                        </div>
                         <div className="descriptions">
                             <h3 id="wine-name" className="item-name">{item.name}</h3>
                             <p>Тип напою: {convertType(item.type)}</p>

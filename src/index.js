@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from "./App";
 import {BrowserRouter} from "react-router-dom";
-import {applyMiddleware, createStore} from "redux";
+import {createStore} from "redux";
 import {Provider} from "react-redux";
-import thunk from "redux-thunk";
-import {composeWithDevTools} from "redux-devtools-extension";
 
 const defaultState = {
     authorised: false,
-    jwtToken: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi50ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTY1MzMzOTYwMH0._8S2afQZzeCLTZJyjdddS3fVRcPK6dJYQoRxCuJnvzV4MIoCxzRlfZ8oUQSHhwNV3Y35vmyTLBEeFjSTKFVGpQ',
+    jwtToken: null,
     user: {
         id: null,
         firstName: null,
@@ -23,9 +21,10 @@ const defaultState = {
 const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case "LOGIN" :
+            state = defaultState
             return {...state, jwtToken: action.payload}
         case "LOGOUT" :
-            return {...state, jwtToken: action.payload}
+            return state = defaultState
         case "SET_USER" :
             return {...state, user: action.payload}
         case "ADD_SEARCH_PARAM" :
@@ -37,7 +36,7 @@ const reducer = (state = defaultState, action) => {
     }
 }
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducer);
 
 ReactDOM.render(
     <Provider store={store}>

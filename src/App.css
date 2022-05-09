@@ -5,14 +5,35 @@
 
 button {
     background-color: #f1f1f1;
+    border: black 1px solid;
+    cursor: pointer;
 }
 
 button:hover {
     transition-duration: 0.2s;
     background-color: #E1E1E1;
-    border: #ff5000 2px solid;
+    border: #ff5000 1px solid;
 }
 
 button:active {
     border: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.box {
+    border: gray 2px solid;
+    border-radius: 8px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.sale {
+    color: #f84147;
+    font-weight: bold;
 }

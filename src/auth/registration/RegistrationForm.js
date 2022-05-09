@@ -1,15 +1,17 @@
 import './RegistrationForm.css';
-import {Component} from "react";
+import {useState} from "react";
 import axios from "axios";
-import {Navigate} from "react-router";
+import {useNavigate} from "react-router";
+import {useDispatch} from "react-redux";
 
 const BASE_PATH = "http://localhost:8080"
-const ELEMENT_PATH = BASE_PATH + "/registration"
+const REGISTRATION_PATH = BASE_PATH + "/registration"
+const PRINCIPAL_PATH = BASE_PATH + "/principal"
 
-export default class RegistrationForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+const RegistrationForm = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const [state, setState] = useState({
             firstName: '',
             lastName: '',
             email: '',
@@ -18,30 +20,44 @@ export default class RegistrationForm extends Component {
             confirmPassword: '',
             error: null,
             status: null,
-            response: null
         }
+    )
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    const handleChange = (event) => {
+        setState({
+                ...state,
+                [event.target.id]: event.target.value
+            }
+        )
     }
 
-    handleChange(event) {
-        this.setState({[event.target.id]: event.target.value})
-    }
-
-    handleSubmit(event) {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post(ELEMENT_PATH, {
-                    firstName: this.state.firstName,
-                    lastName: this.state.lastName,
-                    email: this.state.email,
-                    phoneNumber: this.state.phoneNumber,
-                    password: this.state.password
-            }).then(res => this.state.status = res.status)
+        await axios.post(REGISTRATION_PATH, {
+                firstName: state.firstName,
+                lastName: state.lastName,
+                email: state.email,
+                phoneNumber: state.phoneNumber,
+                password: state.password
+            }
+        )
+            .then(res => {
+                dispatch({type: "LOGIN", payload: res.data});
+                getUser(res.data);
+            })
+            .catch(err => setState({...state, error: err.response}));
     }
 
-    comparePassword() {
-        if(this.state.password !== this.state.confirmPassword) {
+    const getUser = async (apiKey) => {
+        await axios.get(PRINCIPAL_PATH, {headers: {Authorization: 'Bearer ' + apiKey}})
+            .then(res =>
+                dispatch({type: "SET_USER", payload: res.data})
+            )
+        return navigate("/")
+    }
+
+    const comparePassword = () => {
+        if (state.password !== state.confirmPassword) {
             return (
                 <div className="error">
                     <p>Паролі не співпадають</p>
@@ -50,61 +66,55 @@ export default class RegistrationForm extends Component {
         }
     }
 
-    render() {
-        const {error, status} = this.state;
-        if (error) {
-            return (<p> Error {error.message}</p>)
-        } else if (status === 200) {
-            return (
-                <div>
-                    <h1>Реєстрація успішна</h1>
-                    <p>{this.state.response}</p>
-                    <Navigate  to="/" />
-                </div>
-            );
-        }
-        else {
-            return (
-                <div className="reg-main">
-                    <div>{this.state.response}</div>
-                    <h1 id="reg-header">Реєстрація:</h1>
-                    <form className="reg-form">
-
-                        <div className="reg-item">
-                            <label>Ім'я</label>
-                            <input type="text" value={this.state.firstName} onChange={this.handleChange} id="firstName"/>
-                        </div>
-
-                        <div className="reg-item">
-                            <label>Прізвище</label>
-                            <input type="text" value={this.state.lastName} onChange={this.handleChange} id="lastName"/>
-                        </div>
-
-                        <div className="reg-item">
-                            <label>Електронна пошта</label>
-                            <input type="text" value={this.state.email} onChange={this.handleChange} id="email"/>
-                        </div>
-
-                        <div className="reg-item">
-                            <label>Номер телефону</label>
-                            <input type="text" value={this.state.phoneNumber} onChange={this.handleChange} id="phoneNumber"/>
-                        </div>
-
-                        <div className="reg-item">
-                            <label>Пароль</label>
-                            <input type="password" value={this.state.password} onChange={this.handleChange} id="password"/>
-                        </div>
-
-                        <div className="reg-item">
-                            <label>Повторіть пароль</label>
-                            <input type="password" value={this.state.confirmPassword} onChange={this.handleChange} id="confirmPassword"/>
-                            {this.comparePassword()}
-                        </div>
-
-                        <button type="submit" onClick={this.handleSubmit}>Підтвердити</button>
-                    </form>
-                </div>
-            );
+    const checkErrors = () => {
+        if (state.error) {
+            return (<p className="error"> Error {state.error.message}</p>)
         }
     }
+
+    return (
+        <div className="reg-main">
+            <h1 id="reg-header">Реєстрація:</h1>
+            <form className="reg-form box">
+
+                <div className="reg-item">
+                    <label>Ім'я</label>
+                    <input type="text" value={state.firstName} onChange={handleChange} id="firstName"/>
+                </div>
+
+                <div className="reg-item">
+                    <label>Прізвище</label>
+                    <input type="text" value={state.lastName} onChange={handleChange} id="lastName"/>
+                </div>
+
+                <div className="reg-item">
+                    <label>Електронна пошта</label>
+                    <input type="text" value={state.email} onChange={handleChange} id="email"/>
+                </div>
+
+                <div className="reg-item">
+                    <label>Номер телефону</label>
+                    <input type="text" value={state.phoneNumber} onChange={handleChange} id="phoneNumber"/>
+                </div>
+
+                <div className="reg-item">
+                    <label>Пароль</label>
+                    <input type="password" value={state.password} onChange={handleChange} id="password"/>
+                </div>
+
+                <div className="reg-item">
+                    <label>Повторіть пароль</label>
+                    <input type="password" value={state.confirmPassword} onChange={handleChange}
+                           id="confirmPassword"/>
+                    {comparePassword()}
+                </div>
+
+                {checkErrors()}
+
+                <button onClick={handleSubmit}>Підтвердити</button>
+            </form>
+        </div>
+    );
 }
+
+export default RegistrationForm;
