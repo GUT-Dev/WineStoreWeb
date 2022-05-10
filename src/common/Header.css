@@ -13,7 +13,7 @@ header {
     width: auto;
 }
 
-.header-cart-account-img {
+.header-account-img {
     position: absolute;
     right: 80px;
 }
@@ -24,9 +24,24 @@ header {
 }
 
 .cart-icon {
+    cursor: pointer;
     height: 34px;
     width: 34px;
     margin: 23px
+}
+
+.cart-icon:hover {
+    height: 36px;
+    width: 36px;
+    margin: 22px;
+    transition-duration: 0.1s;
+}
+
+.cart-icon:active {
+    height: 34px;
+    width: 34px;
+    margin: 23px;
+    transition-duration: 0.05s;
 }
 
 .search-container {
@@ -66,4 +81,29 @@ header {
     height: 25px;
     width: 25px;
     margin: 5px 10px 5px 0;
+}
+
+.dropdown-block {
+    top: 65px;
+    right: -2px;
+    position: absolute;
+    border: gray 2px solid;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: white;
+    z-index: 100;
+}
+
+.dropdown-block p {
+    margin: 0;
+    padding: 8px 15px;
+    background-color: #e7e7e7;
+    text-align: center;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.dropdown-block p:hover {
+    background-color: #c7c7c7;
+    transition-duration: 0.2s;
 }

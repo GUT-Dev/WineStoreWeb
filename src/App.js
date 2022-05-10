@@ -11,6 +11,7 @@ import Cart from "./cart/Cart";
 import AddWine from "./managerPanel/AddWine/AddWine";
 import {useSelector} from "react-redux";
 import ManagerPanel from "./managerPanel/ManagerPanel";
+import Logout from "./auth/Logout";
 
 const App = () => {
 
@@ -33,6 +34,7 @@ const App = () => {
                 <Route path={"/auth"} element={<Authorisation/>}/>
                 <Route path={"/cart"} element={<Cart/>}/>
                 <Route path={"/addWine"} element={<AddWine/>}/>
+                <Route path={"/logout"} element={<Logout />}/>
             </Routes>
             <Footer/>
         </div>

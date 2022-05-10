@@ -4,17 +4,21 @@ import logo from "../resources/WineStoreLogo.png"
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {useNavigate} from "react-router";
+import {Dropdown, IconButton, Navbar, Popover, Whisper} from "rsuite";
+import {DropdownMenu} from "rsuite/Picker";
+import DropdownItem from "rsuite/esm/Dropdown/DropdownItem";
 
 const CART_ICON = "https://cdn-icons-png.flaticon.com/512/34/34627.png";
 const ACCOUNT_ICON = "https://cdn-icons.flaticon.com/png/512/2550/premium/2550260.png?token=exp=1651880899~hmac=bfffa971a4363b9a3d9bc28896605c84"
 const SEARCH_ICON = "https://cdn-icons-png.flaticon.com/512/25/25313.png";
 
 const Header = () => {
-    let location = useLocation();
+    const location = useLocation();
     const dispatch = useDispatch();
     const authDetails = useSelector(state => state)
     const navigate = useNavigate()
-    let [ search, setSearch ] = useState();
+    const [ search, setSearch ] = useState();
+    const [open, setOpen] = useState(false);
 
     const getAccountLink = () => {
         if (authDetails.authorised) {
@@ -46,9 +50,63 @@ const Header = () => {
         }
     }
 
-    const logout = () => {
-        dispatch({type: "LOGOUT"})
-        navigate("/");
+    const getCartItem = () => {
+        if (authDetails.jwtToken) {
+            return (
+                <Link to="/cart">
+                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
+                </Link>
+            );
+        } else {
+            return (
+                <div onClick={newAlert}>
+                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
+                </div>
+            );
+        }
+    }
+
+    const newAlert = () => {
+        alert("Перед здійсненням покупок потрібна авторизація");
+    }
+
+    const UserNavItem = () => {
+
+        const UserNavItems = () => {
+            if (authDetails.authorised) {
+                return (
+                        <div className="dropdown-block">
+                            <Link to={"/profile"}>
+                                <p>Профіль</p>
+                            </Link>
+                            <Link to={"/history"}>
+                                <p>Історія покупок</p>
+                            </Link>
+                            <Link to={"/logout"}>
+                                <p>Вихід</p>
+                            </Link>
+                        </div>
+                )
+            } else {
+                return (
+                    <div className="dropdown-block">
+                        <Link to={"/auth"}>
+                            <p>Вхід</p>
+                        </Link>
+                        <Link to={"/registration"}>
+                            <p>Реєстрація</p>
+                        </Link>
+                    </div>
+                )
+            }
+        }
+
+        return (
+            <div>
+                <img className="header-account-img cart-icon" src={ACCOUNT_ICON} alt="cart_icon" onClick={() => setOpen(!open)}/>
+                {open ? <UserNavItems /> : ''}
+            </div>
+        )
     }
 
     return (
@@ -65,12 +123,8 @@ const Header = () => {
                         <img src={SEARCH_ICON} alt="Search icon"/>
                     </div>
                 </div>
-                <Link to={getAccountLink()}>
-                    <img className="header-cart-account-img cart-icon" src={ACCOUNT_ICON} alt="cart_icon"/>
-                </Link>
-                <Link to="/cart">
-                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
-                </Link>
+                <UserNavItem />
+                {getCartItem()}
             </header>
         </div>
     );

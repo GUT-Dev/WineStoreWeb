@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import App from "./App";
 import {BrowserRouter} from "react-router-dom";
 import {createStore} from "redux";
 import {Provider} from "react-redux";
+import {createRoot} from "react-dom/client";
 
 const defaultState = {
     authorised: false,
@@ -22,7 +22,7 @@ const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case "LOGIN" :
             state = defaultState
-            return {...state, jwtToken: action.payload}
+            return {...state, jwtToken: action.payload, authorised: true}
         case "LOGOUT" :
             return state = defaultState
         case "SET_USER" :
@@ -38,13 +38,14 @@ const reducer = (state = defaultState, action) => {
 
 const store = createStore(reducer);
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
     <Provider store={store}>
         <React.StrictMode className="root">
             <BrowserRouter>
                 <App/>
             </BrowserRouter>
         </React.StrictMode>
-    </Provider>,
-    document.getElementById('root')
-);
+    </Provider>);

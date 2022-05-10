@@ -69,3 +69,16 @@
     margin: 10px;
     justify-content: flex-end;
 }
+
+.wine-element-button {
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    cursor: pointer;
+    border: none;
+}
+
+.wine-element-button img {
+    width: 35px;
+    height: 35px;
+}
