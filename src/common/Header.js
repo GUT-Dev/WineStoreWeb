@@ -4,9 +4,6 @@ import logo from "../resources/WineStoreLogo.png"
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-import {Dropdown, IconButton, Navbar, Popover, Whisper} from "rsuite";
-import {DropdownMenu} from "rsuite/Picker";
-import DropdownItem from "rsuite/esm/Dropdown/DropdownItem";
 
 const CART_ICON = "https://cdn-icons-png.flaticon.com/512/34/34627.png";
 const ACCOUNT_ICON = "https://cdn-icons.flaticon.com/png/512/2550/premium/2550260.png?token=exp=1651880899~hmac=bfffa971a4363b9a3d9bc28896605c84"
@@ -19,14 +16,6 @@ const Header = () => {
     const navigate = useNavigate()
     const [ search, setSearch ] = useState();
     const [open, setOpen] = useState(false);
-
-    const getAccountLink = () => {
-        if (authDetails.authorised) {
-            return "/account"
-        } else {
-            return "/registration"
-        }
-    }
 
     const onClick = () => {
         dispatch({type: "ADD_SEARCH_PARAM", payload: search});
