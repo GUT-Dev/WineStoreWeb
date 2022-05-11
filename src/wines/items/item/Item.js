@@ -31,6 +31,13 @@ const Item = (props) => {
     }
 
     const getPrice = () => {
+        if(!props.item.available) {
+            return (
+                <div className="item-price-container">
+                    <p className="item-price-unavailable">Немає в наявності</p>
+                </div>
+            );
+        }
         if(props.item.discount === 0) {
             return (
                 <div className="item-price-container">
@@ -47,6 +54,16 @@ const Item = (props) => {
         }
     }
 
+    const getButton = () => {
+        if(props.item.available) {
+            return (
+                <div className="item-button" onClick={addToCart}>
+                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
+                </div>
+            );
+        }
+    }
+
         return (
             <div className="item-box">
                 <Link className="item" to={WINE_PATH + props.item.id}>
@@ -56,9 +73,7 @@ const Item = (props) => {
                         {getPrice()}
                     </div>
                 </Link>
-                <div className="item-button" onClick={addToCart}>
-                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
-                </div>
+                {getButton()}
             </div>
         );
 }

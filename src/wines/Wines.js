@@ -15,6 +15,7 @@ const Wines = () => {
             min: 0,
             max: 10000
         },
+        hasDiscount: null
     });
     let searchByName = useSelector(state => state.searchByName);
 
@@ -39,7 +40,15 @@ const Wines = () => {
     }
 
     const addFilter = (param) => {
-        if (sweetnessTypes.includes(param)) {
+        if (param === "discount") {
+            setFilters(filters => {
+                    return {
+                        ...filters,
+                        hasDiscount: true
+                    }
+                }
+            )
+        } else if (sweetnessTypes.includes(param)) {
             setFilters(filters => {
                 return {
                     ...filters,
@@ -57,7 +66,15 @@ const Wines = () => {
     }
 
     const removeFilter = (param) => {
-        if (sweetnessTypes.includes(param)) {
+        if (param === "discount") {
+            setFilters(filters => {
+                    return {
+                        ...filters,
+                        hasDiscount: null
+                    }
+                }
+            )
+        } else if (sweetnessTypes.includes(param)) {
             let id = filters.sweetness.indexOf(param);
             filters.sweetness.splice(id, 1);
             setFilters(value => {
@@ -83,6 +100,9 @@ const Wines = () => {
 
         if(searchByName != null) {
             queryParams = queryParams.concat('name=' + searchByName + '&')
+        }
+        if(filters.hasDiscount != null) {
+            queryParams = queryParams.concat('hasDiscount=' + filters.hasDiscount + '&')
         }
         if(filters.sweetness.length > 0) {
             queryParams = queryParams.concat('sweetness=' + filters.sweetness + '&');

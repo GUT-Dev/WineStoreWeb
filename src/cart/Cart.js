@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/cart"
+const BUY_PATH = ELEMENT_PATH + "/buy"
 
 const Cart = () => {
     let [state, setState] = useState({
@@ -51,7 +52,16 @@ const Cart = () => {
     }
 
     const buy = () => {
-        alert("Покупка успішна")
+        axios.put(BUY_PATH, {},{headers: {Authorization: 'Bearer ' + token}})
+            .then(res => {
+                    if (res.status === 200) {
+                        alert("Покупка успішна")
+                        update();
+                    } else {
+                        alert("Помилка")
+                    }
+                }
+            )
     }
 
     if (state.error) {

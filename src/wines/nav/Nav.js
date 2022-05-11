@@ -13,7 +13,7 @@ const Nav = (props) => {
         value: defaultPrice.max / 190
     }
 
-    const sweetnessElement = (name, convertFunction) => {
+    const filterElement = (name, convertFunction) => {
         return (
             <div className="filter-item">
                 <input onClick={name => changeFilter(name.target)} type="checkbox" id={name}/>
@@ -46,16 +46,20 @@ const Nav = (props) => {
 
     return (
         <div className="nav">
+            <div className="filter-block filter-item filter-action">
+                <input onClick={name => changeFilter(name.target)} type="checkbox" id="discount"/>
+                <span>Акційні товари</span>
+            </div>
             <div className="filter-block">
                 <h3 className="filter-header">Тип:</h3>
                 {wineTypes.map(element =>
-                        sweetnessElement(element, convertType))}
+                        filterElement(element, convertType))}
             </div>
 
             <div className="filter-block">
                 <h3 className="filter-header">Вміст цукру:</h3>
                 {sweetnessTypes.map(element =>
-                    sweetnessElement(element, convertSweetness))}
+                    filterElement(element, convertSweetness))}
             </div>
 
             <div className="range-filter">

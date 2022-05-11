@@ -33,6 +33,12 @@
     margin: 0;
 }
 
+.item-price-unavailable {
+    font-size: 1.3em;
+    margin: 0;
+    color: gray;
+}
+
 .item-old-price {
     color: gray;
     text-decoration: line-through;
@@ -51,6 +57,16 @@
 .item-button img {
     width: 35px;
     height: 35px;
+}
+.item-button img:hover {
+    width: 37px;
+    height: 37px;
+    transition-duration: 0.2s;
+}
+.item-button img:active {
+    width: 35px;
+    height: 35px;
+    transition-duration: 0.05s;
 }
 
 .item-price-container {

@@ -21,6 +21,27 @@ const CartItem  = (props) => {
         }
     }
 
+    const descriptions = () => {
+        if(props.item.available) {
+            return (
+                <div className="cart-item-descriptions">
+                    <h4 className="cart-item-name">{props.item.wine.name}</h4>
+                    <p className="cart-item-price"> Ціна за 1шт: {props.item.wine.priceWithSale} грн</p>
+                    <p>Кількість: {props.item.amount}</p>
+                    {checkDiscount()}
+                    <p className="cart-item-price">Загальна
+                        ціна: {props.item.wine.priceWithSale * props.item.amount} грн</p>
+                </div>
+            )
+        } else {
+            return (
+                <div className="cart-item-descriptions">
+                    <p>Немає в наявності</p>
+                </div>
+            )
+        }
+    }
+
     const removeFromCart = () => {
         axios.delete(CART_PATH + "/" + props.item.id, {
                 headers: {Authorization: 'Bearer ' + token}
@@ -38,14 +59,7 @@ const CartItem  = (props) => {
             <Link to={WINE_PATH + props.item.wine.id}>
                 <img className="cart-item-img" src={checkImg(props.item.wine.img)} alt="wine icon"/>
             </Link>
-            <div className="cart-item-descriptions">
-                <h4 className="cart-item-name">{props.item.wine.name}</h4>
-                <p className="cart-item-price"> Ціна за 1шт: {props.item.wine.priceWithSale} грн</p>
-                <p>Кількість: {props.item.amount}</p>
-                {checkDiscount()}
-                <p className="cart-item-price">Загальна
-                    ціна: {props.item.wine.priceWithSale * props.item.amount} грн</p>
-            </div>
+            {descriptions()}
         </div>
     )
 }

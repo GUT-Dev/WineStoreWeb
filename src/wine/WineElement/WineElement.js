@@ -44,16 +44,33 @@ const WineElement = (props) => {
 
 
     const getPrice = () => {
-        if (state.item.discount === 0) {
+        if(!state.item.available) {
+            return (
+                <div className="price-container">
+                    <h4 className="wine-unavailable">Немає в наявності</h4>
+                </div>
+            );
+        } else if (state.item.discount === 0) {
             return (
                 <div className="price-container">
                     <h4 className="wine-price price">{state.item.price} грн.</h4>
-                </div>);
+                </div>
+            );
         } else {
             return (
                 <div className="price-container">
                     <h3 className="old-price"> {state.item.price}</h3>
                     <h4 className="wine-price sale">{state.item.priceWithSale} грн.</h4>
+                </div>
+            );
+        }
+    }
+
+    const getButton = () => {
+        if (state.item.available) {
+            return (
+                <div className="wine-element-button" onClick={addToCart}>
+                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
                 </div>
             )
         }
@@ -93,9 +110,7 @@ const WineElement = (props) => {
                         <p>Країна: {state.item.land.name}</p>
                         <p>Солодкість: {convertSweetness(state.item.sweetness)}</p>
                         <p>Міцність: {state.item.strength}%</p>
-                        <div className="wine-element-button" onClick={addToCart}>
-                            <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
-                        </div>
+                        {getButton()}
                         {getPrice()}
                     </div>
                 </div>
