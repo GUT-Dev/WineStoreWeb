@@ -24,10 +24,16 @@ export default ({filters}) => {
     );
 
     return (
-        <div className="items">
-            {items.map(item =>
-                <Item item={item} key={item.id}/>
-            )}
+        <div className="items-block">
+            <div className="items-header">
+                <p>Знайдено товарів: {items.length}</p>
+                <div>Сортування</div>
+            </div>
+            <div className="items">
+                {items.map(item =>
+                    <Item item={item} key={item.id}/>
+                )}
+            </div>
         </div>
     );
 };

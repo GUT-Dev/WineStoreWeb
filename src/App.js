@@ -12,10 +12,14 @@ import AddWine from "./managerPanel/AddWine/AddWine";
 import {useSelector} from "react-redux";
 import ManagerPanel from "./managerPanel/ManagerPanel";
 import Logout from "./auth/Logout";
+import SalesHistory from "./user/salesHistory/SalesHistory";
+import Orders from "./managerPanel/Orders/Orders";
+import EditWines from "./managerPanel/EditWines/EditWines";
 
 const App = () => {
 
-    const permissions = useSelector(state => state.user.roles)
+    const permissions = useSelector(state => state.user.roles);
+    const authorised = useSelector(state => state.authorised);
 
     const managerPanel = () => {
         if(permissions.includes("MANAGER")) {
@@ -30,11 +34,14 @@ const App = () => {
             <Routes>
                 <Route path={"/"} element={<Wines/>}/>
                 <Route path={"/wine/:id"} element={<WineEl/>}/>
-                <Route path={"/registration"} element={<RegistrationForm/>}/>
                 <Route path={"/auth"} element={<Authorisation/>}/>
-                <Route path={"/cart"} element={<Cart/>}/>
-                <Route path={"/addWine"} element={<AddWine/>}/>
-                <Route path={"/logout"} element={<Logout />}/>
+                <Route path={"/logout"} element={<Logout/>}/>
+                <Route path={"/registration"} element={<RegistrationForm/>}/>
+                {authorised ? <Route path={"/cart"} element={<Cart/>}/> : null}
+                {authorised ? <Route path={"/salesHistory"} element={<SalesHistory/>}/> : null}
+                {permissions.includes("MANAGER") ? <Route path={"/manager/addWine"} element={<AddWine/>}/> : null}
+                {permissions.includes("MANAGER") ? <Route path={"/manager/editWines"} element={<EditWines/>}/> : null}
+                {permissions.includes("MANAGER") ? <Route path={"/manager/orders"} element={<Orders/>}/> : null}
             </Routes>
             <Footer/>
         </div>

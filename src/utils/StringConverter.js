@@ -31,3 +31,22 @@ export const convertSweetness = (sweetness) => {
                 return " - "
         }
 }
+
+export const convertTrackingStatus = (status) => {
+    switch (status) {
+        case ("NEW") :
+            return (<div className="order-status order-new">Нове</div>);
+        case ("IN_PROGRESS") :
+            return (<div className="order-status order-in-progress">Комплектується</div>);
+        case ("SENT") :
+            return (<div className="order-status order-sent">Відправлено</div>);
+        case ("ARRIVED") :
+            return (<div className="order-status order-arrived">Прибуло у відділення</div>);
+        case ("RECEIVED") :
+            return (<div className="order-status order-received">Отримано</div>);
+        case ("CANCELED") :
+            return (<div className="order-status order-canceled">Відмінено</div>);
+        default :
+            return ""
+    }
+}

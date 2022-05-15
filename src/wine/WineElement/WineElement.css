@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
 .wine-element {
     display: flex;
     flex-direction: column;
@@ -100,4 +102,13 @@
     width: 33px;
     height: 33px;
     transition-duration: 0.1s;
+}
+
+.wine-element-rating {
+    margin: 15px;
+    position: absolute;
+}
+
+.wine-element-star {
+    font-size: 1.8em;
 }

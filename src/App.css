@@ -37,3 +37,37 @@ a {
     color: #f84147;
     font-weight: bold;
 }
+
+.checked-star {
+    /*color: #ff5000;*/
+    color: gold;
+}
+
+.unchecked-star {
+    color: #a2a2a2;
+}
+
+table, th, td {
+    border:1px solid gray;
+}
+
+th, td {
+    padding: 2px;
+}
+
+.sold-date {
+    margin: 10px;
+    color: gray;
+}
+
+.order-status {
+    border: none;
+    border-radius: 15px;
+    padding: 4px 10px;
+    margin-top: 5px;
+    height: 20px;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -64,18 +64,40 @@ const Item = (props) => {
         }
     }
 
+    const getRating = () => {
+        const rating = props.item.rating;
         return (
-            <div className="item-box">
-                <Link className="item" to={WINE_PATH + props.item.id}>
-                    <img className="item-img" src={checkImg(props.item.img)} alt="wine icon" />
-                    <div className="item-descriptions">
-                        <h4 className="item-name">{props.item.name}</h4>
-                        {getPrice()}
-                    </div>
-                </Link>
-                {getButton()}
+            <div className="item-rating">
+                {getStar(rating > 0)}
+                {getStar(rating > 1)}
+                {getStar(rating > 2)}
+                {getStar(rating > 3)}
+                {getStar(rating > 4)}
             </div>
-        );
+        )
+    }
+
+    const getStar = (isChecked) => {
+        if (isChecked) {
+            return (<span className="fa fa-star checked-star"/>);
+        } else {
+            return (<span className="fa fa-star unchecked-star"/>);
+        }
+    }
+
+    return (
+        <div className="item-box">
+            <Link className="item" to={WINE_PATH + props.item.id}>
+                {getRating()}
+                <img className="item-img" src={checkImg(props.item.img)} alt="wine icon"/>
+                <div className="item-descriptions">
+                    <h4 className="item-name">{props.item.name}</h4>
+                    {getPrice()}
+                </div>
+            </Link>
+            {getButton()}
+        </div>
+    );
 }
 
 export default Item;

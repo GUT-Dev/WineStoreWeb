@@ -64,11 +64,11 @@ const Header = () => {
         const UserNavItems = () => {
             if (authDetails.authorised) {
                 return (
-                        <div className="dropdown-block">
+                        <div className="dropdown-block" onMouseLeave={() => setOpen(false)}>
                             <Link to={"/profile"}>
                                 <p>Профіль</p>
                             </Link>
-                            <Link to={"/history"}>
+                            <Link to={"/salesHistory"}>
                                 <p>Історія покупок</p>
                             </Link>
                             <Link to={"/logout"}>
@@ -78,7 +78,7 @@ const Header = () => {
                 )
             } else {
                 return (
-                    <div className="dropdown-block">
+                    <div className="dropdown-block" onMouseLeave={() => setOpen(false)}>
                         <Link to={"/auth"}>
                             <p>Вхід</p>
                         </Link>

@@ -6,12 +6,22 @@
     margin-bottom: 8px;
 }
 
-.add-wine {
+.manager-panel-items {
+    display: flex;
+    flex-direction: row;
+}
+
+.manager-panel-item {
     padding: 3px;
     font-size: 1.3em;
     cursor: pointer;
     margin: 8px 0 8px 30px;
     height: 24px;
+}
+
+.manager-panel-item:hover {
+    border: #ff5000 2px solid;
+    transition-duration: 0.3s;
 }
 
 .manager-panel-header {

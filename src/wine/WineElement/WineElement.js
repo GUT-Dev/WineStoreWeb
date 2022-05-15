@@ -42,6 +42,26 @@ const WineElement = (props) => {
         }, [props]
     );
 
+    const getRating = () => {
+        const rating = state.item.rating;
+        return (
+            <div className="wine-element-rating">
+                {getStar(rating > 0)}
+                {getStar(rating > 1)}
+                {getStar(rating > 2)}
+                {getStar(rating > 3)}
+                {getStar(rating > 4)}
+            </div>
+        )
+    }
+
+    const getStar = (isChecked) => {
+        if(isChecked) {
+            return (<span className="fa fa-star wine-element-star checked-star"/>);
+        } else {
+            return (<span className="fa fa-star wine-element-star unchecked-star"/>);
+        }
+    }
 
     const getPrice = () => {
         if(!state.item.available) {
@@ -100,6 +120,7 @@ const WineElement = (props) => {
         return (
             <div className="wine-element">
                 <div className="wine-element-item">
+                    {getRating()}
                     <div className="wine-img-container">
                         <img className="-wine-img" src={checkImg(state.item.img)} alt="wine logo"/>
                     </div>
