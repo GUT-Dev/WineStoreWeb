@@ -21,9 +21,9 @@
     justify-content: center;
 }
 
-.wine-img {
-    max-width: inherit;
-    max-height: inherit;
+.wine-img-container img {
+    max-width: 600px;
+    max-height: 400px;
     object-fit: cover;
 }
 

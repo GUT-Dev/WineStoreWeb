@@ -1,10 +1,10 @@
 import './CartItem.css';
 import {Link} from "react-router-dom";
 import checkImg from "../../utils/DefaultImg";
+import defaultImg from "../../resources/default_img.png";
+import removeFromCartIcon from "../../resources/icons/remove_from_cart_icon.png"
 import axios from "axios";
 import {useSelector} from "react-redux";
-
-const REMOVE_ICON = "https://cdn-icons.flaticon.com/png/512/3156/premium/3156999.png?token=exp=1651946297~hmac=8af074c78fb677dbcab2a21280293907";
 
 const WINE_PATH = "/wine/"
 const BASE_PATH = "http://localhost:8080"
@@ -51,13 +51,17 @@ const CartItem  = (props) => {
         props.update();
     }
 
+    function setDefaultImg(event) {
+        event.target.src = defaultImg;
+    }
+
     return (
         <div className="cart-item box">
             <div className="cart-item-remove" onClick={removeFromCart}>
-                <img src={REMOVE_ICON} alt="Remove icon"/>
+                <img src={removeFromCartIcon} alt="Remove icon"/>
             </div>
             <Link to={WINE_PATH + props.item.wine.id}>
-                <img className="cart-item-img" src={checkImg(props.item.wine.img)} alt="wine icon"/>
+                <img onError={setDefaultImg} className="cart-item-img" src={checkImg(props.item.wine.img)} alt="wine icon"/>
             </Link>
             {descriptions()}
         </div>

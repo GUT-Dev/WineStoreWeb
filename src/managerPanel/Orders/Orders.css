@@ -15,10 +15,36 @@
     margin: 0 10px 10px;
 }
 
-.orders-filters div {
-    margin: 5px 40px;
+.orders-filters button {
+    width: 100px;
+    height: 28px;
+    border-radius: 20px;
+    margin: 18px;
 }
 
+.orders-filters-by-name {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+.orders-filters-by-name div {
+    margin-right: 20px;
+}
+
+.orders-filters-by-name div input{
+    margin-left: 10px;
+}
+
+.orders-filters-statuses {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.orders-filters-status {
+    margin-right: 10px;
+}
 
 .orders-table {
     margin: 20px;

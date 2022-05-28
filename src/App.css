@@ -39,7 +39,6 @@ a {
 }
 
 .checked-star {
-    /*color: #ff5000;*/
     color: gold;
 }
 
@@ -70,4 +69,8 @@ th, td {
 
 .text-center {
     text-align: center;
+}
+
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }

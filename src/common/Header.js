@@ -1,13 +1,12 @@
 import './Header.css';
 import {Link, useLocation} from "react-router-dom";
-import logo from "../resources/WineStoreLogo.png"
+import logo from '../resources/WineStoreLogo.png';
+import cartIcon from '../resources/icons/cart_icon.png';
+import accountIcon from '../resources/icons/account_icon.png';
+import searchIcon from '../resources/icons/search_icon.png';
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-
-const CART_ICON = "https://cdn-icons-png.flaticon.com/512/34/34627.png";
-const ACCOUNT_ICON = "https://cdn-icons.flaticon.com/png/512/2550/premium/2550260.png?token=exp=1651880899~hmac=bfffa971a4363b9a3d9bc28896605c84"
-const SEARCH_ICON = "https://cdn-icons-png.flaticon.com/512/25/25313.png";
 
 const Header = () => {
     const location = useLocation();
@@ -43,13 +42,13 @@ const Header = () => {
         if (authDetails.jwtToken) {
             return (
                 <Link to="/cart">
-                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
+                    <img className="header-cart-img cart-icon" src={cartIcon} alt="cart_icon"/>
                 </Link>
             );
         } else {
             return (
                 <div onClick={newAlert}>
-                    <img className="header-cart-img cart-icon" src={CART_ICON} alt="cart_icon"/>
+                    <img className="header-cart-img cart-icon" src={cartIcon} alt="cart_icon"/>
                 </div>
             );
         }
@@ -92,7 +91,7 @@ const Header = () => {
 
         return (
             <div>
-                <img className="header-account-img cart-icon" src={ACCOUNT_ICON} alt="cart_icon" onClick={() => setOpen(!open)}/>
+                <img className="header-account-img cart-icon" src={accountIcon} alt="account_icon" onClick={() => setOpen(!open)}/>
                 {open ? <UserNavItems /> : ''}
             </div>
         )
@@ -109,7 +108,7 @@ const Header = () => {
                 <div className="search-container">
                     <input value={search} className="search-input" onChange={onChange} onKeyPress={pressEnter}/>
                     <div className="search-icon" onClick={onClick}>
-                        <img src={SEARCH_ICON} alt="Search icon"/>
+                        <img src={searchIcon} alt="Search icon"/>
                     </div>
                 </div>
                 <UserNavItem />

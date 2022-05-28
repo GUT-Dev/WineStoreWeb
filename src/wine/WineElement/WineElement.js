@@ -2,10 +2,10 @@ import './WineElement.css';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import checkImg from "../../utils/DefaultImg";
-import { convertType, convertSweetness } from '../../utils/StringConverter'
+import addToCartIcon from '../../resources/icons/add_to_cart.png'
+import {convertType, convertSweetness, convertAvailableStatus} from '../../utils/StringConverter'
 import {useSelector} from "react-redux";
-
-const ADD_TO_CART_ICON = "https://cdn-icons.flaticon.com/png/512/5412/premium/5412718.png?token=exp=1651882401~hmac=afe6b60da29d5a7347ddadf003c8cb31";
+import defaultImg from "../../resources/default_img.png";
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/wine/"
@@ -67,7 +67,7 @@ const WineElement = (props) => {
         if(!state.item.available) {
             return (
                 <div className="price-container">
-                    <h4 className="wine-unavailable">Немає в наявності</h4>
+                    <h4 className="wine-unavailable">{convertAvailableStatus(state.item.availableStatus)}</h4>
                 </div>
             );
         } else if (state.item.discount === 0) {
@@ -90,7 +90,7 @@ const WineElement = (props) => {
         if (state.item.available) {
             return (
                 <div className="wine-element-button" onClick={addToCart}>
-                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
+                    <img src={addToCartIcon} alt="Add to cart icon"/>
                 </div>
             )
         }
@@ -112,6 +112,10 @@ const WineElement = (props) => {
         }
     }
 
+    function setDefaultImg(event) {
+        event.target.src = defaultImg;
+    }
+
     if (state.error) {
         return (<p> Error {state.error.message}</p>)
     } else if (!state.isLoaded) {
@@ -122,7 +126,7 @@ const WineElement = (props) => {
                 <div className="wine-element-item">
                     {getRating()}
                     <div className="wine-img-container">
-                        <img className="-wine-img" src={checkImg(state.item.img)} alt="wine logo"/>
+                        <img onError={setDefaultImg} src={checkImg(state.item.img)} alt="wine logo"/>
                     </div>
                     <div className="descriptions">
                         <h3 id="wine-name" className="item-name">{state.item.name}</h3>

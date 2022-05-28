@@ -1,6 +1,5 @@
-
-const DEFAULT_IMG_URL = "https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg"
+import defaultImg from "../resources/default_img.png"
 
 export default function checkImg(link) {
-    return link != null ? link : DEFAULT_IMG_URL
+    return link != null ? link : defaultImg
 }

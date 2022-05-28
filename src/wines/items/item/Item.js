@@ -1,10 +1,11 @@
 import './Item.css';
 import {Link} from "react-router-dom";
 import checkImg from "../../../utils/DefaultImg";
+import defaultImg from "../../../resources/default_img.png"
+import addToCartIcon from '../../../resources/icons/add_to_cart.png'
 import axios from "axios";
 import {useSelector} from "react-redux";
-
-const ADD_TO_CART_ICON = "https://cdn-icons.flaticon.com/png/512/5412/premium/5412718.png?token=exp=1651882401~hmac=afe6b60da29d5a7347ddadf003c8cb31";
+import {convertAvailableStatus} from "../../../utils/StringConverter";
 
 const WINE_PATH = "/wine/"
 
@@ -34,7 +35,7 @@ const Item = (props) => {
         if(!props.item.available) {
             return (
                 <div className="item-price-container">
-                    <p className="item-price-unavailable">Немає в наявності</p>
+                    <p className="item-price-unavailable">{convertAvailableStatus(props.item.availableStatus)}</p>
                 </div>
             );
         }
@@ -58,7 +59,7 @@ const Item = (props) => {
         if(props.item.available) {
             return (
                 <div className="item-button" onClick={addToCart}>
-                    <img src={ADD_TO_CART_ICON} alt="Add to cart icon"/>
+                    <img src={addToCartIcon} alt="Add to cart icon"/>
                 </div>
             );
         }
@@ -85,11 +86,15 @@ const Item = (props) => {
         }
     }
 
+    function setDefaultImg(event) {
+        event.target.src = defaultImg;
+    }
+
     return (
         <div className="item-box">
             <Link className="item" to={WINE_PATH + props.item.id}>
                 {getRating()}
-                <img className="item-img" src={checkImg(props.item.img)} alt="wine icon"/>
+                <img onError={setDefaultImg} className="item-img" src={checkImg(props.item.img)} alt="wine icon"/>
                 <div className="item-descriptions">
                     <h4 className="item-name">{props.item.name}</h4>
                     {getPrice()}

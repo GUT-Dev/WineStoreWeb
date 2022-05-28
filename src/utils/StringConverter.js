@@ -18,18 +18,29 @@ export const convertType = (type) => {
 export const convertSweetness = (sweetness) => {
         switch (sweetness) {
             case ("EXTRA_DRY") :
-                return ("Сухе");
+                return "Сухе";
             case ("DRY") :
-                return ("Напів-сухе");
+                return "Напів-сухе";
             case ("MEDIUM") :
-                return ("Напів-солодке");
+                return "Напів-солодке";
             case ("SWEET") :
-                return ("Солодке");
+                return "Солодке";
             case ("VERY_SWEET") :
-                return ("Дуже солодке");
+                return "Дуже солодке";
             default :
                 return " - "
         }
+}
+
+export const convertAvailableStatus = (visibleStatus) => {
+    switch (visibleStatus) {
+        case "IS_OVER" :
+            return "Немає в наявності";
+        case ("EXPECTED") :
+            return "Очікується";
+        case "DISCONTINUED" :
+            return "Знято з виробництва";
+    }
 }
 
 export const convertTrackingStatus = (status) => {
