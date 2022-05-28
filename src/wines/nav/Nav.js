@@ -7,11 +7,11 @@ const Nav = (props) => {
     const changeFilter = props.changeFilter;
     const defaultPrice = props.price;
     let [price, setPrice] = useState(props.price);
-    const step = {
-        min: 10,
-        max: 190,
-        value: defaultPrice.max / 190
-    }
+    // const step = {
+    //     min: 10,
+    //     max: 190,
+    //     value: defaultPrice.max / 190
+    // }
 
     const filterElement = (name, convertFunction) => {
         return (

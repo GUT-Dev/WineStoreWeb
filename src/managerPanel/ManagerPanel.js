@@ -8,9 +8,9 @@ const ManagerPanel = () => {
                 <Link to="/manager/addWine">
                     <h1 className="manager-panel-item box">Додати товар</h1>
                 </Link>
-                <Link to="/manager/editWines">
-                    <h1 className="manager-panel-item box">Редагувати товари</h1>
-                </Link>
+                {/*<Link to="/manager/editWines">*/}
+                {/*    <h1 className="manager-panel-item box">Редагувати товари</h1>*/}
+                {/*</Link>*/}
                 <Link to="/manager/orders">
                     <h1 className="manager-panel-item box">Трекінг замовлень</h1>
                 </Link>

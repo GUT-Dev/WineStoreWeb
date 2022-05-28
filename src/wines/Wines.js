@@ -1,23 +1,41 @@
 import './Wines.css';
 import Items from "./items/Items";
 import Nav from "./nav/Nav";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import axios from "axios";
 
 export const sweetnessTypes = [ "EXTRA_DRY", "DRY", "MEDIUM", "SWEET", "VERY_SWEET" ];
 export const wineTypes = [ "WHITE", "RED", "ROSE", "SPARKLING", "FORTIFIED" ];
 
-const Wines = () => {
+const GET_MAX_PRICE = "http://localhost:8080/wine/max-price";
+const GET_MIN_PRICE = "http://localhost:8080/wine/min-price";
+
+const Wines = (props) => {
+    let [loaded, setLoaded] = useState(false);
     let [filters, setFilters] = useState({
         sweetness: [],
         type: [],
         price: {
-            min: 0,
-            max: 10000
+            min: null,
+            max: null
         },
         hasDiscount: null
     });
     let searchByName = useSelector(state => state.searchByName);
+
+    const load = useCallback(async () => {
+        let minPrice = await axios.get(GET_MIN_PRICE)
+            .then(r => r.data);
+        let maxPrice = await axios.get(GET_MAX_PRICE)
+            .then(r => r.data);
+        setFilters({...filters, price: {min: minPrice, max: maxPrice}});
+        setLoaded(true);
+    }, [])
+
+    useEffect(() => {
+        load();
+    }, [props])
 
     const submit = (value) => {
         setFilters(filters => {
@@ -119,12 +137,18 @@ const Wines = () => {
             : queryParams;
     }
 
-    return (
-        <div className="wines">
-            <Nav changeFilter={changeFilter} price={filters.price} submit={submit}/>
-            <Items filters={crateQueryParams(filters)}/>
-        </div>
-    );
+    if(loaded) {
+        return (
+            <div className="wines">
+                <Nav changeFilter={changeFilter} price={filters.price} submit={submit}/>
+                <Items filters={crateQueryParams(filters)}/>
+            </div>
+        );
+    } else {
+        return (
+            <p>Загрузка.....</p>
+        )
+    }
 }
 
 export default Wines;

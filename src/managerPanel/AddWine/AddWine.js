@@ -69,11 +69,6 @@ const AddWine = (props) => {
             .then(r => alert("Успішно" + r.status))
     }
 
-    const createBrand = (name) => {
-        axios.post(CREATE_BRAND_PATH, name, {headers: {Authorization: 'Bearer ' + token}})
-            .then(r => setState({...state, brands: {...state.brands + r.data}}))
-    }
-
     const loadData = useCallback(async () => {
         let tempLands = await axios.get(LANDS_PATH)
             .then(res => res.data);
@@ -157,7 +152,7 @@ const AddWine = (props) => {
     const onSubmit = (event) => {
         event.preventDefault();
         create();
-        // setData(defaultData);
+        setData(defaultData);
     }
 
     const onChange = (event) => {

@@ -124,7 +124,7 @@ const Orders = () => {
                 <div className="orders-actions">
                     {status === 'NEW' ? <button onClick={changeStatus} id={'confirm'}
                                                 style={{backgroundColor: 'yellowgreen'}}>Підтвердити</button> : null}
-                    {status !== 'CANCELED' && status !== 'RECEIVED' ?
+                    {status !== 'CANCELED' && status !== 'RECEIVED' && status !== 'NEW' ?
                         <button onClick={changeStatus} id={'next'} style={{backgroundColor: 'yellow'}}>Наступний
                             крок</button> : null}
                     {status !== 'CANCELED' && status !== 'RECEIVED' ? <button onClick={changeStatus} id={'cancel'}

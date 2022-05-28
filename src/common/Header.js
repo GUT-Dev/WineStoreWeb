@@ -99,8 +99,6 @@ const Header = () => {
 
     return (
         <div>
-            <div>User: {authDetails.user.id + ' ' + authDetails.user.firstName}</div>
-            <div>Token: {authDetails.jwtToken}</div>
             <header className="box">
                 <Link to="/">
                     <img className="header-logo" alt="Header logo" src={logo}/>
