@@ -2,34 +2,46 @@ import './Items.css';
 import Item from "./item/Item";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Pagination from "../../common/Pagination";
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/wine"
 
 export default ({filters}) => {
-    let [items, setItems] = useState([]);
-    let [totalElements, setTotalElements] = useState();
-    let [sort, setSort] = useState("id,desc");
+    const [items, setItems] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [sort, setSort] = useState("id,desc");
+    const [offset, setOffset] = useState(15);
+    const [pageInfo, setPageInfo] = useState({
+        totalPages: null,
+        totalElements: null,
+        currentPage: null,
+    });
+
     useEffect(
         () => {
-            axios.get(ELEMENT_PATH + filters + "&sort=" + sort)
+            axios.get(ELEMENT_PATH + filters + "&page=" + currentPage + "&size=" + offset + "&sort=" + sort)
                 .then(
                     (result) => {
                         setItems(result.data.content);
-                        setTotalElements(result.data.totalElements);
+                        setPageInfo({
+                            totalPages: result.data.totalPages,
+                            totalElements: result.data.totalElements,
+                            currentPage: result.data.number
+                        })
                     },
                     (error) => {
                         console.log("error")
                     }
                 )
         }
-        , [filters, sort]
+        , [filters, sort, currentPage]
     );
 
     return (
         <div className="items-block">
             <div className="items-header">
-                <p>Знайдено товарів: {totalElements}</p>
+                <p>Знайдено товарів: {pageInfo.totalElements}</p>
                 <div>
                     Сортування по:
                     <select value={sort} onChange={(event) => setSort(event.target.value)}>
@@ -46,6 +58,7 @@ export default ({filters}) => {
                     <Item item={item} key={item.id}/>
                 )}
             </div>
+            <Pagination pageInfo={pageInfo} setPage={setCurrentPage}/>
         </div>
     );
 };

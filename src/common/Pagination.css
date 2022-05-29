@@ -1,0 +1,39 @@
+.pagination-container {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+}
+
+.pagination-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.pagination-element {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    border: #737373 1px solid;
+    border-radius: 5px;
+    width: 35px;
+    height: 30px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.pagination-element:hover {
+    width: 33px;
+    height: 28px;
+    border: #ff5000 2px solid;
+    color: #f84147;
+}
+
+.pagination-element.active {
+    border: #ff5000 2px solid;
+    width: 35px;
+    height: 28px;
+}
+
+.pagination-element p {
+    margin: auto;
+}
