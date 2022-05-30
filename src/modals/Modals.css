@@ -54,3 +54,12 @@
 .add-item-modal-content p {
     margin: 25px;
 }
+
+.success-modal-content {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    background-color: white;
+    border: #5b5b5b 2px solid;
+    border-radius: 20px;
+}

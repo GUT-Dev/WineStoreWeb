@@ -3,25 +3,28 @@ import axios from "axios";
 import CartItem from "./CartItem/CartItem";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import SuccessModal from "../modals/SuccessModal";
+import ErrorModal from "../modals/ErrorModal";
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/cart"
 const BUY_PATH = ELEMENT_PATH + "/buy"
 
 const Cart = () => {
-    let [state, setState] = useState({
-            error: null,
-            isLoaded: false,
-            item: null,
-            changed: false
-        }
-    )
+    const [modalOpen, setModalOpen] = useState(false);
+    const [errorModalOpen, setErrorModalOpen] = useState(false);
+    const [state, setState] = useState({
+        error: null,
+        isLoaded: false,
+        item: null,
+        changed: false
+    });
     const token = useSelector(state => state.jwtToken);
 
     useEffect(
         () => {
             if (token != null) {
-                axios.get(ELEMENT_PATH, {headers: { Authorization: 'Bearer ' + token}})
+                axios.get(ELEMENT_PATH, {headers: {Authorization: 'Bearer ' + token}})
                     .then(res => res.data)
                     .then(
                         (result) => {
@@ -44,7 +47,7 @@ const Cart = () => {
     );
 
     const update = () => {
-        if(state.changed) {
+        if (state.changed) {
             setState({...state, changed: false})
         } else {
             setState({...state, changed: true})
@@ -52,13 +55,13 @@ const Cart = () => {
     }
 
     const buy = () => {
-        axios.put(BUY_PATH, {},{headers: {Authorization: 'Bearer ' + token}})
+        axios.put(BUY_PATH, {}, {headers: {Authorization: 'Bearer ' + token}})
             .then(res => {
-                    if (res.status === 200) {
-                        alert("Покупка успішна")
+                    if (res.status === 200 || res.status === 200) {
+                        setModalOpen(true)
                         update();
                     } else {
-                        alert("Помилка")
+                        setErrorModalOpen(true)
                     }
                 }
             )
@@ -75,12 +78,14 @@ const Cart = () => {
                 {state.item.items.map(item =>
                     <CartItem item={item} update={update.bind(this)} key={item.id}/>
                 )}
-                <div className="cart-total">
+                <div hidden={state.item.items.length === 0} className="cart-total">
                     <p>Сума: {state.item.totalPrice} грн</p>
                     <p>Сума зі знижкою: {state.item.totalPriceWithSale} грн</p>
                     <p>Загальна знижка: {state.item.totalSalePercent}%</p>
                     <button className="cart-button" onClick={buy}>Купити</button>
                 </div>
+                <SuccessModal text="Покупка успішна" open={modalOpen} setOpen={setModalOpen}/>
+                <ErrorModal open={errorModalOpen} setOpen={setErrorModalOpen}/>
             </div>
         );
     }

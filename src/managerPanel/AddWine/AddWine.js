@@ -5,6 +5,8 @@ import {convertAvailableStatus, convertSweetness, convertType} from "../../utils
 import {useSelector} from "react-redux";
 import plusIcon from "../../resources/icons/plus_icon.png"
 import AddItemModal from "../../modals/AddItemModal";
+import SuccessModal from "../../modals/SuccessModal";
+import ErrorModal from "../../modals/ErrorModal";
 
 const BASE_PATH = "http://localhost:8080/wine";
 const LANDS_PATH = "http://localhost:8080/land";
@@ -18,6 +20,8 @@ const STATUSES_PATH = BASE_PATH + "/statuses"
 const AddWine = (props) => {
     const [createLandOpen, setCreateLandOpen] = useState(false);
     const [createBrandOpen, setCreateBrandOpen] = useState(false);
+    const [openSuccessModal, setOpenSuccessModal] = useState(false);
+    const [openErrorModal, setOpenErrorModal] = useState(false);
     const token = useSelector(state => state.jwtToken);
 
     const [state, setState] = useState({
@@ -66,7 +70,12 @@ const AddWine = (props) => {
             }
         }
         axios.post(BASE_PATH, data, {headers: {Authorization: 'Bearer ' + token}})
-            .then(r => alert("Успішно" + r.status))
+            .then(() => setOpenSuccessModal(true))
+            .catch(error => {
+                if(error.response.status === 500) {
+                    setOpenErrorModal(true)
+                }
+            })
     }
 
     const loadData = useCallback(async () => {
@@ -264,6 +273,8 @@ const AddWine = (props) => {
 
             <AddItemModal open={createLandOpen} setOpen={setCreateLandOpen} loadData={loadData} link={CREATE_LAND_PATH} itemName="країну"/>
             <AddItemModal open={createBrandOpen} setOpen={setCreateBrandOpen} loadData={loadData} link={CREATE_BRAND_PATH} itemName="бренд"/>
+            <SuccessModal text="Товар успішно додано" open={openSuccessModal} setOpen={setOpenSuccessModal}/>
+            <ErrorModal open={openErrorModal} setOpen={setOpenErrorModal} descriptions="Спробуйте ще раз, або зверніться до адміна"/>
         </div>
     )
 }
