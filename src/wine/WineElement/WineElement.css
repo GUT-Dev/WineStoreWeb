@@ -13,6 +13,7 @@
 }
 
 .wine-img-container {
+    position: relative;
     width: 50%;
     border: none;
     border-radius: 8px;
@@ -24,7 +25,7 @@
 .wine-img-container img {
     max-width: 600px;
     max-height: 400px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .descriptions {
@@ -55,8 +56,7 @@
 }
 
 .wine-unavailable {
-    margin: 0;
-    margin-bottom: 15px;
+    margin: 0 0 15px;
     font-size: 1.3em;
     color: #737373;
 }
@@ -111,4 +111,30 @@
 
 .wine-element-star {
     font-size: 1.8em;
+}
+
+.wine-element-edit-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.wine-element-edit-button:hover {
+    width: 32px;
+    height: 32px;
+    transition-duration: 0.2s;
+}
+
+.wine-element-edit-button:active {
+    width: 30px;
+    height: 30px;
+    transition-duration: 0.05s;
+}
+
+.wine-element-edit-button img {
+    width: inherit;
+    height: inherit;
 }

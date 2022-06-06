@@ -14,7 +14,7 @@ import ManagerPanel from "./managerPanel/ManagerPanel";
 import Logout from "./auth/Logout";
 import SalesHistory from "./user/salesHistory/SalesHistory";
 import Orders from "./managerPanel/Orders/Orders";
-import EditWines from "./managerPanel/EditWines/EditWines";
+import UserPage from "./user/userPage/UserPage";
 
 const App = () => {
 
@@ -39,8 +39,9 @@ const App = () => {
                 <Route path={"/registration"} element={<RegistrationForm/>}/>
                 {authorised ? <Route path={"/cart"} element={<Cart/>}/> : null}
                 {authorised ? <Route path={"/salesHistory"} element={<SalesHistory/>}/> : null}
+                {authorised ? <Route path={"/salesHistory"} element={<SalesHistory/>}/> : null}
+                {authorised ? <Route path={"profile"} element={<UserPage />}/> : null}
                 {permissions.includes("MANAGER") ? <Route path={"/manager/addWine"} element={<AddWine/>}/> : null}
-                {permissions.includes("MANAGER") ? <Route path={"/manager/editWines"} element={<EditWines/>}/> : null}
                 {permissions.includes("MANAGER") ? <Route path={"/manager/orders"} element={<Orders/>}/> : null}
             </Routes>
             <Footer/>

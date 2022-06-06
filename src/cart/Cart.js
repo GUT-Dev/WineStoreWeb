@@ -3,8 +3,8 @@ import axios from "axios";
 import CartItem from "./CartItem/CartItem";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import SuccessModal from "../modals/SuccessModal";
-import ErrorModal from "../modals/ErrorModal";
+import SuccessModal from "../modals/SuccessModal/SuccessModal";
+import ErrorModal from "../modals/ErrorModal/ErrorModal";
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/cart"

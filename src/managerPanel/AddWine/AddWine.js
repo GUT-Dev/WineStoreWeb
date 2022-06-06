@@ -5,8 +5,8 @@ import {convertAvailableStatus, convertSweetness, convertType} from "../../utils
 import {useSelector} from "react-redux";
 import plusIcon from "../../resources/icons/plus_icon.png"
 import AddItemModal from "../../modals/AddItemModal";
-import SuccessModal from "../../modals/SuccessModal";
-import ErrorModal from "../../modals/ErrorModal";
+import SuccessModal from "../../modals/SuccessModal/SuccessModal";
+import ErrorModal from "../../modals/ErrorModal/ErrorModal";
 
 const BASE_PATH = "http://localhost:8080/wine";
 const LANDS_PATH = "http://localhost:8080/land";
@@ -230,7 +230,7 @@ const AddWine = (props) => {
                     <label>Кількість цукру %:</label>
                     <input className="add-wine-form-element-input" type="number" id="sugarAmount" value={data.sugarAmount} onChange={onChange}/>
 
-                    <label>Посилання на фото:</label>
+                    <label>Посилання на фото (рекомендовано 600x600  і більше):</label>
                     <input className="add-wine-form-element-input" type="text" id="img" value={data.img} onChange={onChange}/>
 
                     <label>Опис:</label>
@@ -266,6 +266,9 @@ const AddWine = (props) => {
                                value={data.visible}
                                onClick={() => setData({...data, visible: !data.visible})}/>
                         <lable htmlFor="visible">Видимість для користувачів</lable>
+                    </div>
+                    <div className="addWine-form-img-container">
+                        {data.img ? <img src={data.img} alt="wine logo"/> : null}
                     </div>
                 </div>
                 <button type="submit" onClick={onSubmit}>Підтвердити</button>

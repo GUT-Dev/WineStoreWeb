@@ -13,6 +13,7 @@
 
 .modal.open {
     transform: scale(1);
+    overflow: auto;
 }
 
 .modal-header {

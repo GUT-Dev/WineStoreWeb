@@ -2,8 +2,10 @@ import './Nav.css';
 import {convertSweetness, convertType} from "../../utils/StringConverter";
 import {sweetnessTypes, wineTypes} from "../Wines";
 import {useState} from "react";
+import {useSelector} from "react-redux";
 
 const Nav = (props) => {
+    const roles = useSelector(state => state.user.roles);
     const changeFilter = props.changeFilter;
     const defaultPrice = props.price;
     let [price, setPrice] = useState(props.price);
@@ -41,15 +43,23 @@ const Nav = (props) => {
     }
 
     const onSubmit = () => {
-        props.submit(price)
+        props.submit(price);
     }
 
     return (
         <div className="nav">
+            {roles.includes("MANAGER") ? (
+                <div className="filter-block filter-item">
+                    <input onClick={name => changeFilter(name.target)} type="checkbox" id="includeNotVisible"/>
+                    <span>Приховані товари</span>
+                </div>
+            ) : null}
+
             <div className="filter-block filter-item filter-action">
                 <input onClick={name => changeFilter(name.target)} type="checkbox" id="discount"/>
                 <span>Акційні товари</span>
             </div>
+
             <div className="filter-block">
                 <h3 className="filter-header">Тип:</h3>
                 {wineTypes.map(element =>

@@ -20,7 +20,8 @@ const Wines = (props) => {
             min: null,
             max: null
         },
-        hasDiscount: null
+        hasDiscount: null,
+        includeNotVisible: null
     });
     let searchByName = useSelector(state => state.searchByName);
 
@@ -66,6 +67,13 @@ const Wines = (props) => {
                     }
                 }
             )
+        } else if (param === "includeNotVisible") {
+            setFilters(filters => {
+                return {
+                    ...filters,
+                    includeNotVisible: true
+                }
+            })
         } else if (sweetnessTypes.includes(param)) {
             setFilters(filters => {
                 return {
@@ -73,7 +81,7 @@ const Wines = (props) => {
                     sweetness: [...filters.sweetness, param]
                 }
             })
-        } else {
+        } else if (wineTypes.includes(param)) {
             setFilters(filters => {
                 return {
                     ...filters,
@@ -92,6 +100,13 @@ const Wines = (props) => {
                     }
                 }
             )
+        } else if (param === "includeNotVisible") {
+            setFilters(filters => {
+                return {
+                    ...filters,
+                    includeNotVisible: null
+                }
+            })
         } else if (sweetnessTypes.includes(param)) {
             let id = filters.sweetness.indexOf(param);
             filters.sweetness.splice(id, 1);
@@ -101,7 +116,7 @@ const Wines = (props) => {
                     sweetness: [...filters.sweetness]
                 }
             })
-        } else {
+        } else if (wineTypes.includes(param)) {
             let id = filters.type.indexOf(param);
             filters.type.splice(id, 1);
             setFilters(value => {
@@ -121,6 +136,9 @@ const Wines = (props) => {
         }
         if(filters.hasDiscount != null) {
             queryParams = queryParams.concat('hasDiscount=' + filters.hasDiscount + '&')
+        }
+        if(filters.includeNotVisible != null) {
+            queryParams = queryParams.concat('includeNotVisible=' + filters.includeNotVisible + '&')
         }
         if(filters.sweetness.length > 0) {
             queryParams = queryParams.concat('sweetness=' + filters.sweetness + '&');

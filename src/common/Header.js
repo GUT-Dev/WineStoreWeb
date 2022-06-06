@@ -104,7 +104,7 @@ const Header = () => {
                     <img className="header-logo" alt="Header logo" src={logo}/>
                 </Link>
                 <div className="search-container">
-                    <input value={search} className="search-input" onChange={onChange} onKeyPress={pressEnter}/>
+                    <input id="header-search" value={search} autoComplete="off" className="search-input" onChange={onChange} onKeyPress={pressEnter}/>
                     <div className="search-icon" onClick={onClick}>
                         <img src={searchIcon} alt="Search icon"/>
                     </div>

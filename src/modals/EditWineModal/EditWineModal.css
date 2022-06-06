@@ -1,22 +1,29 @@
-.add-wine-header {
+.edit-wine-modal-content {
+    width: 1200px;
+    height: 913px;
+    overflow: initial !important;
+}
+
+.edit-wine-header {
     text-align: center;
 }
 
-.add-wine-form {
+.edit-wine-form {
     position: relative;
     display: flex;
     flex-direction: row;
     padding: 30px 70px;
     justify-content: space-between;
+    background-color: white;
 }
 
-.add-wine-form-element {
+.edit-wine-form-element {
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
 
-.add-wine-form-element-input {
+.edit-wine-form-element-input {
     width: 300px;
     height: 20px;
     margin: 5px 0 20px;
@@ -25,7 +32,7 @@
     font-size: 1.05em;
 }
 
-.add-wine-form-element-checkbox {
+.edit-wine-form-element-checkbox {
     width: 20px;
     height: 20px;
     margin: 5px 10px 20px 0;
@@ -33,7 +40,7 @@
     border: 1px #737373 solid;
 }
 
-.add-wine-form-element-select {
+.edit-wine-form-element-select {
     width: 305px;
     height: 25px;
     border-radius: 5px;
@@ -42,11 +49,11 @@
     font-size: 1em;
 }
 
-.add-wine-form-element-select:active {
+.edit-wine-form-element-select:active {
     border: 1px #737373 solid;
 }
 
-.add-wine-form-element-textarea {
+.edit-wine-form-element-textarea {
     width: 500px;
     height: 80px;
     margin: 5px 0 20px;
@@ -57,7 +64,7 @@
     font-size: 1.2em;
 }
 
-.add-wine-form button {
+.edit-wine-form button {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -66,39 +73,39 @@
     border-radius: 20px;
 }
 
-.add-wine-form-checkbox {
+.edit-wine-form-checkbox {
     display: flex;
     flex-direction: row;
 }
 
-.add-wine-form-add-item {
+.edit-wine-form-add-item {
     display: flex;
     flex-direction: row;
 }
 
-.add-wine-form-add-item div {
+.edit-wine-form-add-item div {
     margin: 5px;
     cursor: pointer;
 }
 
-.add-wine-form-add-item div img {
+.edit-wine-form-add-item div img {
     width: 23px;
     height: 23px;
 }
 
-.add-wine-form-add-item div img:hover {
+.edit-wine-form-add-item div img:hover {
     width: 25px;
     height: 25px;
     transition-duration: 0.2s;
 }
 
-.add-wine-form-add-item div img:active {
+.edit-wine-form-add-item div img:active {
     width: 23px;
     height: 23px;
     transition-duration: 0.05s;
 }
 
-.addWine-form-img-container {
+.editWine-form-img-container {
     width: 350px;
     height: 350px;
     border: #737373 solid 1px;
@@ -108,7 +115,7 @@
     border-radius: 8px;
 }
 
-.addWine-form-img-container img {
+.editWine-form-img-container img {
     width: inherit;
     height: inherit;
     object-fit: contain;

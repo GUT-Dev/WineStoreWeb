@@ -91,7 +91,12 @@ const Item = (props) => {
     }
 
     return (
-        <div className="item-box">
+        <div className="item-box" style={props.item.visible ? null : {border: "red 2px solid"}}>
+            {props.item.visible ? null : (
+                <div className="not-available label">
+                    <p>Приховано</p>
+                </div>
+            )}
             <Link className="item" to={WINE_PATH + props.item.id}>
                 {getRating()}
                 <img onError={setDefaultImg} className="item-img" src={checkImg(props.item.img)} alt="wine icon"/>
