@@ -1,11 +1,9 @@
-.item-box {
+.item-container {
     position: relative;
     padding: 10px;
     margin: 5px;
     width: 265px;
     height: 380px;
-    border: gray 2px solid;
-    border-radius: 8px;
 }
 
 .item {

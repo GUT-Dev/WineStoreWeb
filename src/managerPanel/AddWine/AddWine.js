@@ -7,6 +7,7 @@ import plusIcon from "../../resources/icons/plus_icon.png"
 import AddItemModal from "../../modals/AddItemModal";
 import SuccessModal from "../../modals/SuccessModal/SuccessModal";
 import ErrorModal from "../../modals/ErrorModal/ErrorModal";
+import {useForm} from "react-hook-form";
 
 const BASE_PATH = "http://localhost:8080/wine";
 const LANDS_PATH = "http://localhost:8080/land";
@@ -23,6 +24,10 @@ const AddWine = (props) => {
     const [openSuccessModal, setOpenSuccessModal] = useState(false);
     const [openErrorModal, setOpenErrorModal] = useState(false);
     const token = useSelector(state => state.jwtToken);
+    const { register, handleSubmit, watch, reset, setError, clearErrors, formState: { errors, isValid } } = useForm({
+        mode: "all",
+        shouldFocusError: false
+    });
 
     const [state, setState] = useState({
         lands: [],
@@ -30,22 +35,13 @@ const AddWine = (props) => {
         types: [],
         sweetness: [],
         statuses: [],
+        isLoaded: false
     });
 
     const defaultData = {
-        name: null,
-        img: null,
-        price: null,
-        discount: 0,
-        available: false,
         availableStatus: null,
-        visible: true,
-        descriptions: null,
         type: null,
         sweetness: null,
-        strength: null,
-        sugarAmount: null,
-        ean: null,
         brand: {
             id: null,
             name: null
@@ -53,23 +49,42 @@ const AddWine = (props) => {
         land: {
             id: null,
             name: null
-        },
-        region: null,
-        amountForSale: 0,
+        }
     };
 
-    const [data, setData] = useState(defaultData);
+    const [tempData, setTempData] = useState(defaultData);
 
-    const create = () => {
+    const create = (data) => {
         if (data.available !== false) {
             if (data.availableStatus != null) {
-                setData({
+                setTempData({
                     ...data,
                     availableStatus: null
                 })
             }
         }
-        axios.post(BASE_PATH, data, {headers: {Authorization: 'Bearer ' + token}})
+
+        const sendData = {
+            name: data.name,
+            img: data.img,
+            price: data.price,
+            discount: data.discount,
+            available: data.available,
+            availableStatus: tempData.availableStatus,
+            visible: data.visible,
+            descriptions: data.descriptions,
+            type: tempData.type,
+            sweetness: tempData.sweetness,
+            strength: data.strength,
+            sugarAmount: data.sugarAmount,
+            ean: data.ean,
+            brand: tempData.brand,
+            land: tempData.land,
+            region: data.region,
+            amountForSale: data.amountForSale,
+        };
+
+        axios.post(BASE_PATH, sendData, {headers: {Authorization: 'Bearer ' + token}})
             .then(() => setOpenSuccessModal(true))
             .catch(error => {
                 if(error.response.status === 500) {
@@ -79,48 +94,98 @@ const AddWine = (props) => {
     }
 
     const loadData = useCallback(async () => {
-        let tempLands = await axios.get(LANDS_PATH)
-            .then(res => res.data);
-        let tempBrands = await axios.get(BRAND_PATH)
-            .then(res => res.data);
-        let tempTypes = await axios.get(TYPES_PATH)
-            .then(res => res.data);
-        let tempSweetness = await axios.get(SWEETNESS_PATH)
-            .then(res => res.data);
-        let tempStatuses = await axios.get(STATUSES_PATH)
-            .then(res => res.data);
+            let tempLands = await axios.get(LANDS_PATH)
+                .then(res => res.data);
+            let tempBrands = await axios.get(BRAND_PATH)
+                .then(res => res.data);
+            let tempTypes = await axios.get(TYPES_PATH)
+                .then(res => res.data);
+            let tempSweetness = await axios.get(SWEETNESS_PATH)
+                .then(res => res.data);
+            let tempStatuses = await axios.get(STATUSES_PATH)
+                .then(res => res.data);
 
-        setState({
-            lands: tempLands,
-            brands: tempBrands,
-            types: tempTypes,
-            sweetness: tempSweetness,
-            statuses: tempStatuses,
-        });
+            setState({
+                lands: tempLands,
+                brands: tempBrands,
+                types: tempTypes,
+                sweetness: tempSweetness,
+                statuses: tempStatuses,
+                isLoaded: true
+            });
     }, [])
 
     useEffect(() => {
-        loadData();
-    }, [props]);
+        if(!state.isLoaded) {
+            loadData();
+        }
+        customValidate();
+    }, [props, tempData]);
 
-    const Option = (props) => {
+    const customValidate = () => {
+        if(tempData.land.id === null) {
+            setError("land", {
+                message: "*Поле обов'язкове"
+            })
+        } else {
+            clearErrors("land");
+        }
+
+        if(tempData.brand.id === null) {
+            setError("brand", {
+                message: "*Поле обов'язкове"
+            })
+        } else {
+            clearErrors("brand");
+        }
+
+        if(tempData.type === null) {
+            setError("type", {
+                message: "*Поле обов'язкове"
+            })
+        } else {
+            clearErrors("type");
+        }
+
+        if(tempData.sweetness === null) {
+            setError("sweetness", {
+                message: "*Поле обов'язкове"
+            })
+        } else {
+            clearErrors("sweetness");
+        }
+
+        if(watch("available") === false && tempData.availableStatus === null) {
+            setError("availableStatus", {
+                message: "*Поле обов'язкове"
+            })
+        } else {
+            clearErrors("availableStatus");
+        }
+
+        if(watch("available") === true) {
+            clearErrors("availableStatus");
+        }
+    }
+
+    const Option = ({value}) => {
         return (
-            <option id={props.id} value={props.item.name}>{props.item.name}</option>
+            <option value={value}>{value}</option>
         )
     }
 
-    const EnumOption = (props) => {
+    const EnumOption = ({value, translatedValue}) => {
         return (
-            <option id={props.value} value={props.value}>{props.translatedValue}</option>
+            <option value={value}>{translatedValue}</option>
         )
     }
 
-    const pickOption = (event) => {
+    const pickOption = async (event) => {
         if (state.lands.map(m => m.name).includes(event.target.value)) {
             const index = state.lands.map(m => m.name).indexOf(event.target.value);
             const land = state.lands.at(index);
-            setData({
-                ...data,
+            setTempData({
+                ...tempData,
                 land: {
                     id: land.id,
                     name: land.name
@@ -129,8 +194,8 @@ const AddWine = (props) => {
         } else if (state.brands.map(b => b.name).includes(event.target.value)) {
             const index = state.brands.map(b => b.name).indexOf(event.target.value);
             const brand = state.brands.at(index);
-            setData({
-                ...data,
+            setTempData({
+                ...tempData,
                 brand: {
                     id: brand.id,
                     name: brand.name
@@ -141,141 +206,297 @@ const AddWine = (props) => {
 
     const pickEnumOption = (event) => {
         if (state.types.includes(event.target.value)) {
-            setData({
-                ...data,
+            setTempData({
+                ...tempData,
                 type: event.target.value
             })
         } else if (state.sweetness.includes(event.target.value)) {
-            setData({
-                ...data,
+            setTempData({
+                ...tempData,
                 sweetness: event.target.value
             })
         } else if (state.statuses.includes(event.target.value)) {
-            setData({
-                ...data,
+            setTempData({
+                ...tempData,
                 availableStatus: event.target.value
             })
         }
     }
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        create();
-        setData(defaultData);
-    }
-
-    const onChange = (event) => {
-        setData({
-            ...data,
-            [event.target.id]: event.target.value
-        })
-
+    const onSubmit = async (data) => {
+        create(data);
+        reset();
+        setTempData(defaultData);
     }
 
     return (
         <div>
             <h3 className="add-wine-header">Додати товар</h3>
-            <form className="add-wine-form box">
+            <form className="add-wine-form box" onSubmit={handleSubmit(onSubmit)}>
                 <div className="add-wine-form-element">
-                    <label>Назва:</label>
-                    <input className="add-wine-form-element-input" type="text" id="name" autoComplete="no" value={data.name} onChange={onChange}/>
+                    <label>
+                        Назва:
+                        <input className="add-wine-form-element-input"
+                               type="text"
+                               {...register("name", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   minLength: {
+                                       value: 5,
+                                       message: "*Поле повинне бути від 5 символів"
+                                   },
+                               })}
+                        />
+                        {errors?.name && <span className="add-wine-form-validation-error error">{errors.name?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Код товару:</label>
-                    <input className="add-wine-form-element-input" type="number" id="ean" autoComplete="no" value={data.ean} onChange={onChange}/>
+                    <label>
+                        Код товару:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("ean", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   minLength: {
+                                       value: 5,
+                                       message: "*Поле повинне бути від 5 символів"
+                                   },
+                                   pattern: {
+                                       value: /^[0-9]+$/,
+                                       message: "*Поле повинне складатися тільки з цифр"
+                                   },
+                               })}
+                        />
+                        {errors?.ean && <span className="add-wine-form-validation-error error">{errors.ean?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Бренд:</label>
-                    <div className="add-wine-form-add-item">
-                        <select className="add-wine-form-element-select" value={data.brand.name} onChange={pickOption}>
-                            {state.brands.map(item =>
-                                <Option id={item.id} item={item}/>)}
+                    <label>
+                        Бренд:
+                        <div className="add-wine-form-add-item">
+                            <select className="add-wine-form-element-select" value={tempData.brand.name} onChange={(event) => {pickOption(event); customValidate();}}>
+                                {state.brands.map(item =>
+                                    <Option value={item.name}/>)}
+                                <option hidden={true} value={null}/>
+                            </select>
+
+                            <div onClick={() => setCreateBrandOpen(true)}>
+                                <img src={plusIcon} alt="plus icon"/>
+                            </div>
+                        </div>
+                        {errors?.brand && <span className="add-wine-form-validation-error error">{errors.brand?.message || "Помилка валідації"}</span>}
+                    </label>
+
+                    <label>
+                        Країна:
+                        <div className="add-wine-form-add-item">
+                            <select className="add-wine-form-element-select" value={tempData.land.name} onChange={(event) => {pickOption(event); customValidate();}}>
+                                {state.lands.map(item =>
+                                    <Option value={item.name}/>)}
+                                <option selected hidden value={null}/>
+                            </select>
+
+                            <div onClick={() => setCreateLandOpen(true)}>
+                                <img src={plusIcon} alt="plus icon"/>
+                            </div>
+                        </div>
+                        {errors?.land && <span className="add-wine-form-validation-error error">{errors.land?.message || "Помилка валідації"}</span>}
+                    </label>
+
+                    <label>
+                        Регіон:
+                        <input className="add-wine-form-element-input"
+                               type="text"
+                               {...register("region", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   minLength: {
+                                       value: 5,
+                                       message: "*Поле повинне бути від 5 символів"
+                                   }
+                               })}
+                        />
+                        {errors?.region && <span className="add-wine-form-validation-error error">{errors.region?.message || "Помилка валідації"}</span>}
+                    </label>
+
+                    <label>
+                        Тип напою:
+                        <select className="add-wine-form-element-select"
+                            value={tempData.type}
+                            onChange={pickEnumOption}>
+                            <option hidden value={null}/>
+                            {state.types.map(v =>
+                                <EnumOption value={v} translatedValue={convertType(v)}/>)}
+                        </select>
+                        {errors?.type && <span className="add-wine-form-validation-error error">{errors.type?.message || "Помилка валідації"}</span>}
+                    </label>
+
+                    <label>
+                        Міцність %:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("strength", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   min: {
+                                       value: 0,
+                                       message: "*Мінімальна величина 0"
+                                   },
+                                   max: {
+                                       value: 100,
+                                       message: "*Мінімальна величина 100"
+                                   }
+                               })}
+                        />
+                        {errors?.strength && <span className="add-wine-form-validation-error error">{errors.strength?.message || "Помилка валідації"}</span>}
+                    </label>
+
+                    <label>
+                        Солодкість:
+                        <select className="add-wine-form-element-select" value={tempData.sweetness} onChange={pickEnumOption}>
+                            {state.sweetness.map(v =>
+                                <EnumOption id={v} value={v} translatedValue={convertSweetness(v)}/>)}
                             <option selected hidden value={null}/>
                         </select>
-                        <div onClick={() => setCreateBrandOpen(true)}>
-                            <img src={plusIcon} alt="plus icon"/>
-                        </div>
-                    </div>
+                        {errors?.sweetness && <span className="add-wine-form-validation-error error">{errors.sweetness?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Країна:</label>
-                    <div className="add-wine-form-add-item">
-                        <select className="add-wine-form-element-select" value={data.land.name} onChange={pickOption}>
-                            {state.lands.map(item =>
-                                <Option id={item.id} item={item}/>)}
-                            <option selected hidden value={null}/>
-                        </select>
-                        <div onClick={() => setCreateLandOpen(true)}>
-                            <img src={plusIcon} alt="plus icon"/>
-                        </div>
-                    </div>
+                    <label>
+                        Кількість цукру %:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("sugarAmount", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   min: {
+                                       value: 0,
+                                       message: "*Мінімальна величина 0"
+                                   },
+                                   max: {
+                                       value: 100,
+                                       message: "*Мінімальна величина 100"
+                                   }
+                               })}
+                        />
+                        {errors?.sugarAmount && <span className="add-wine-form-validation-error error">{errors.sugarAmount?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Регіон:</label>
-                    <input className="add-wine-form-element-input" type="text" id="region" autoComplete="no" value={data.region} onChange={onChange}/>
+                    <label>
+                        Посилання на фото (рекомендовано 600x600  і більше):
+                        <input className="add-wine-form-element-input"
+                               type="text"
+                               {...register("img", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   pattern: {
+                                       value: /(\b(http|https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig,
+                                       message: "*Посилання не валідне"
+                                   }
+                               })}
+                        />
+                        {errors?.img && <span className="add-wine-form-validation-error error">{errors.img?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Тип напою:</label>
-                    <select className="add-wine-form-element-select" value={data.type} onChange={pickEnumOption}>
-                        {state.types.map(v =>
-                            <EnumOption id={v} value={v} translatedValue={convertType(v)}/>)}
-                        <option selected hidden value={null}/>
-                    </select>
-
-                    <label>Міцність %:</label>
-                    <input className="add-wine-form-element-input" type="number" id="strength" value={data.strength} onChange={onChange}/>
-
-                    <label>Солодкість:</label>
-                    <select className="add-wine-form-element-select" value={data.sweetness} onChange={pickEnumOption}>
-                        {state.sweetness.map(v =>
-                            <EnumOption id={v} value={v} translatedValue={convertSweetness(v)}/>)}
-                        <option selected hidden value={null}/>
-                    </select>
-
-                    <label>Кількість цукру %:</label>
-                    <input className="add-wine-form-element-input" type="number" id="sugarAmount" value={data.sugarAmount} onChange={onChange}/>
-
-                    <label>Посилання на фото (рекомендовано 600x600  і більше):</label>
-                    <input className="add-wine-form-element-input" type="text" id="img" value={data.img} onChange={onChange}/>
-
-                    <label>Опис:</label>
-                    <textarea className="add-wine-form-element-textarea" id="descriptions" maxLength={250} value={data.descriptions} onChange={onChange}/>
+                    <label>
+                        Опис:
+                        <textarea className="add-wine-form-element-textarea"
+                                  {...register("descriptions", {
+                                      required: "*Поле обов'язкове для заповнення",
+                                      minLength: {
+                                          value: 20,
+                                          message: "*Мінімальна довжина поля 20 символів"
+                                      }
+                                  })}
+                            maxLength={250}
+                        />
+                        {errors?.descriptions && <span className="add-wine-form-validation-error error">{errors.descriptions?.message || "Помилка валідації"}</span>}
+                    </label>
                 </div>
+
                 <div className="add-wine-form-element">
-                    <label>Ціна:</label>
-                    <input className="add-wine-form-element-input" type="number" id="price" value={data.price} onChange={onChange}/>
+                    <label>
+                        Ціна:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("price", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   min: {
+                                       value: 0,
+                                       message: "*Мінімальна величина 0"
+                                   }
+                               })}
+                        />
+                        {errors?.price && <span className="add-wine-form-validation-error error">{errors.price?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Знижка:</label>
-                    <input className="add-wine-form-element-input" type="number" id="discount" value={data.discount} onChange={onChange}/>
+                    <label>
+                        Знижка %:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("discount", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   min: {
+                                       value: 0,
+                                       message: "*Мінімальна величина 0"
+                                   },
+                                   max: {
+                                       value: 100,
+                                       message: "*Мінімальна величина 100"
+                                   }
+                               })}
+                        />
+                        {errors?.discount && <span className="add-wine-form-validation-error error">{errors.discount?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <label>Стартова кількість для продажу:</label>
-                    <input className="add-wine-form-element-input" type="number" id="amountForSale" value={data.amountForSale} onChange={onChange}/>
+                    <label>
+                        Стартова кількість для продажу:
+                        <input className="add-wine-form-element-input"
+                               type="number"
+                               {...register("amountForSale", {
+                                   required: "*Поле обов'язкове для заповнення",
+                                   min: {
+                                       value: 0,
+                                       message: "*Мінімальна величина 0"
+                                   }
+                               })}
+                        />
+                        {errors?.amountForSale && <span
+                            className="add-wine-form-validation-error error">{errors.amountForSale?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <div>
-                        <input className="add-wine-form-element-checkbox" type="checkbox" id="available"
-                               value={data.available}
-                               onClick={() => setData({...data, available: !data.available})}/>
-                        <label htmlFor="available">Доступно для продаж</label>
-                    </div>
+                    <label style={{display: "flex", flexDirection: "row", marginBottom: 15 + 'px'}}>
+                        Доступно для продаж
+                        <input className="add-wine-form-element-checkbox" type="checkbox"
+                               {...register("available", {
+                                   value: false
+                               })}
+                        />
+                    </label>
 
-                    <label>Статус товару:</label>
-                    <select className="add-wine-form-element-select" disabled={data.available} value={data.availableStatus} onChange={pickEnumOption}>
-                        {state.statuses.map(v =>
-                            <EnumOption id={v} value={v} translatedValue={convertAvailableStatus(v)}/>)}
-                        <option selected hidden value={null}/>
-                    </select>
+                    <label>
+                        Статус товару:
+                        <select className="add-wine-form-element-select" disabled={watch("available")}
+                                value={tempData.availableStatus} onChange={pickEnumOption}>
+                            <option selected hidden value={null}/>
+                            {state.statuses.map(v =>
+                                <EnumOption id={v} value={v} translatedValue={convertAvailableStatus(v)}/>)}
+                        </select>
+                        {errors?.availableStatus && <span
+                            className="add-wine-form-validation-error error">{errors.availableStatus?.message || "Помилка валідації"}</span>}
+                    </label>
 
-                    <div>
-                        <input className="add-wine-form-element-checkbox" type="checkbox" id="visible"
-                               checked={data.visible}
-                               value={data.visible}
-                               onClick={() => setData({...data, visible: !data.visible})}/>
-                        <lable htmlFor="visible">Видимість для користувачів</lable>
-                    </div>
+                    <label style={{display: "flex", flexDirection: "row", marginBottom: 15 + 'px'}}>
+                        Видимість для користувачів
+                        <input className="add-wine-form-element-checkbox" type="checkbox"
+                               {...register("visible", {
+                                   value: true
+                               })}
+                        />
+                    </label>
+
                     <div className="addWine-form-img-container">
-                        {data.img ? <img src={data.img} alt="wine logo"/> : null}
+                        {watch("img") ? <img src={watch("img")} alt="wine logo"/> : null}
                     </div>
                 </div>
-                <button type="submit" onClick={onSubmit}>Підтвердити</button>
+
+                <input className="add-wine-form-submit" type="submit" value="Підтвердити" disabled={!isValid}/>
             </form>
 
-            <AddItemModal open={createLandOpen} setOpen={setCreateLandOpen} loadData={loadData} link={CREATE_LAND_PATH} itemName="країну"/>
-            <AddItemModal open={createBrandOpen} setOpen={setCreateBrandOpen} loadData={loadData} link={CREATE_BRAND_PATH} itemName="бренд"/>
+            <AddItemModal open={createLandOpen} setOpen={setCreateLandOpen} loadData={loadData} link={CREATE_LAND_PATH} itemName="країну" />
+            <AddItemModal open={createBrandOpen} setOpen={setCreateBrandOpen} loadData={loadData} link={CREATE_BRAND_PATH} itemName="бренд" />
             <SuccessModal text="Товар успішно додано" open={openSuccessModal} setOpen={setOpenSuccessModal}/>
             <ErrorModal open={openErrorModal} setOpen={setOpenErrorModal} descriptions="Спробуйте ще раз, або зверніться до адміна"/>
         </div>

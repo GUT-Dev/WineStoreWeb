@@ -91,7 +91,7 @@ const Item = (props) => {
     }
 
     return (
-        <div className="item-box" style={props.item.visible ? null : {border: "red 2px solid"}}>
+        <div className="item-container box" style={props.item.visible ? null : {border: "red 2px solid"}}>
             {props.item.visible ? null : (
                 <div className="not-available label">
                     <p>Приховано</p>

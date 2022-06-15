@@ -8,7 +8,7 @@
     flex-direction: row;
 }
 
-.user-page-container > div {
+.user-page-general {
     width: 50%;
     height: 550px;
     padding: 15px;
@@ -18,13 +18,18 @@
     position: relative;
 }
 
-.user-page-general {
-}
-
 .user-page-address {
+    width: 50%;
+    height: 550px;
+    padding: 15px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .user-page-row {
+    position: relative;
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -52,6 +57,17 @@
     background-color: #737373;
 }
 
+.user-page-icon-submit {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
 .user-page-icon {
     position: absolute;
     top: 8px;
@@ -74,6 +90,16 @@
     width: 20px;
     height: 20px;
     transition-duration: 0.05s;
+}
+
+.user-page-save-button {
+    border: 1px gray solid;
+    transition-duration: 0.2s;
+}
+
+.user-page-save-button:hover {
+    border: 1px #ff5000 solid;
+    transition-duration: 0.2s;
 }
 
 .user-page-save-address-button {
@@ -101,4 +127,11 @@
     width: 120px;
     height: 25px;
     border-radius: 15px;
+}
+
+.user-page-validation-error {
+    position: absolute;
+    font-size: 0.8em;
+    left: 0;
+    bottom: 10px;
 }

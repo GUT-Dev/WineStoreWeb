@@ -3,6 +3,7 @@ import {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
+import {useForm} from "react-hook-form";
 
 const BASE_PATH = "http://localhost:8080"
 const REGISTRATION_PATH = BASE_PATH + "/registration"
@@ -11,41 +12,25 @@ const PRINCIPAL_PATH = BASE_PATH + "/principal"
 const RegistrationForm = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const [state, setState] = useState({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: '',
-            password: '',
-            confirmPassword: '',
-            error: null,
-            status: null,
-        }
-    )
+    const { register, handleSubmit, watch, reset, formState: { errors, isValid } } = useForm({
+        mode: "onBlur"
+    });
+    const [apiError, setApiError] = useState(null);
 
-    const handleChange = (event) => {
-        setState({
-                ...state,
-                [event.target.id]: event.target.value
-            }
-        )
-    }
-
-    const handleSubmit = async (event) => {
-        event.preventDefault()
+    const onSubmit = async (data) => {
         await axios.post(REGISTRATION_PATH, {
-                firstName: state.firstName,
-                lastName: state.lastName,
-                email: state.email,
-                phoneNumber: state.phoneNumber,
-                password: state.password
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+                password: data.password
             }
-        )
-            .then(res => {
+        ).then(res => {
                 dispatch({type: "LOGIN", payload: res.data});
+                reset();
                 getUser(res.data);
-            })
-            .catch(err => setState({...state, error: err.response}));
+            }
+        ).catch(err => setApiError(err.response));
     }
 
     const getUser = async (apiKey) => {
@@ -56,62 +41,115 @@ const RegistrationForm = () => {
         return navigate("/")
     }
 
-    const comparePassword = () => {
-        if (state.password !== state.confirmPassword) {
-            return (
-                <div className="error">
-                    <p>Паролі не співпадають</p>
-                </div>
-            )
-        }
-    }
-
     const checkErrors = () => {
-        if (state.error) {
-            return (<p className="error"> Error {state.error.message}</p>)
+        if (apiError) {
+            return (<p className="error"> Error {apiError.message}</p>)
         }
     }
 
     return (
         <div className="reg-main">
             <h1 id="reg-header">Реєстрація:</h1>
-            <form className="reg-form box">
+            <form className="reg-form box" onSubmit={handleSubmit(onSubmit)}>
 
                 <div className="reg-item">
                     <label>Ім'я</label>
-                    <input type="text" value={state.firstName} onChange={handleChange} id="firstName"/>
+                    <input type="text"
+                           maxLength={30}
+                           {...register("firstName", {
+                               required: "*Поле обов'язкове для заповнення",
+                               minLength: {
+                                   value: 3,
+                                   message: "*Ім'я повинне бути від 3 символів"
+                               },
+                               pattern: {
+                                   value: /^[А-Яа-я&A-Za-z]+$/,
+                                   message: "*Ім'я повинне містити тільки літери"
+                               }
+                               })}
+                    />
+                    {errors?.name && <span className="reg-form-validation-error error">{errors.name?.message || "Помилка"}</span>}
                 </div>
 
                 <div className="reg-item">
                     <label>Прізвище</label>
-                    <input type="text" value={state.lastName} onChange={handleChange} id="lastName"/>
+                    <input type="text"
+                           maxLength={30}
+                           {...register("lastName", {
+                               required: "*Поле обов'язкове для заповнення",
+                               minLength: {
+                                   value: 3,
+                                   message: "*Прізвище повинне бути від 3 символів"
+                               },
+                               pattern: {
+                                   value: /^[А-Яа-я&A-Za-z]+$/,
+                                   message: "*Прізвище повинне містити тільки літери"
+                               }
+                           })}
+                    />
+                    {errors?.lastName && <span className="reg-form-validation-error error">{errors.lastName?.message || "Помилка"}</span>}
                 </div>
 
                 <div className="reg-item">
                     <label>Електронна пошта</label>
-                    <input type="text" value={state.email} onChange={handleChange} id="email"/>
+                    <input type="text"
+                           maxLength={32}
+                           {...register("email", {
+                               required: "*Поле обов'язкове для заповнення",
+                               pattern: {
+                                   value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                   message: "*Електронна пошта не валідна"
+                               }
+                           })}
+                    />
+                    {errors?.email && <span className="reg-form-validation-error error">{errors.email?.message || "Помилка"}</span>}
                 </div>
 
                 <div className="reg-item">
                     <label>Номер телефону</label>
-                    <input type="text" value={state.phoneNumber} onChange={handleChange} id="phoneNumber"/>
+                    <input type="text"
+                           maxLength={16}
+                           {...register("phoneNumber", {
+                               required: "*Поле обов'язкове для заповнення",
+                               pattern: {
+                                   value: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                                   message: "*Невірний формат"
+                               }
+                           })}
+                    />
+                    {errors?.phoneNumber && <span className="reg-form-validation-error error">{errors.phoneNumber?.message || "Помилка"}</span>}
                 </div>
 
                 <div className="reg-item">
                     <label>Пароль</label>
-                    <input type="password" value={state.password} onChange={handleChange} id="password"/>
+                    <input type="password"
+                           maxLength={25}
+                           {...register("password", {
+                               required: "*Поле обов'язкове для заповнення",
+                               minLength: {
+                                   value: 8,
+                                   message: "Мінімальна довжина пароля 8 символів"
+                               }
+                           })}
+                    />
+                    {errors?.password && <span className="reg-form-validation-error error">{errors?.password?.message || "Помилка"}</span>}
                 </div>
 
                 <div className="reg-item">
                     <label>Повторіть пароль</label>
-                    <input type="password" value={state.confirmPassword} onChange={handleChange}
-                           id="confirmPassword"/>
-                    {comparePassword()}
+                    <input type="password"
+                           maxLength={25}
+                           {...register("confirmPassword", {
+                               required: "*Повторіть пароль",
+                               validate: (value) => value === watch('password')
+                           })}
+                    />
+                    {errors?.confirmPassword && <span className="reg-form-validation-error error">{errors?.comparePassword?.message || "Паролі не співпадають"}</span>}
                 </div>
 
                 {checkErrors()}
 
-                <button onClick={handleSubmit}>Підтвердити</button>
+                <input className="reg-form-submit" type="submit" value="Підтвердити" disabled={!isValid}/>
             </form>
         </div>
     );

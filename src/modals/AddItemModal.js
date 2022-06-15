@@ -13,7 +13,7 @@ const AddItemModal = ({open, setOpen, loadData, itemName, link}) => {
         setError(null);
     }, [open]);
 
-    const createLand = (event) => {
+    const createItem = (event) => {
         event.preventDefault();
         axios.post(link, {name}, {headers: {Authorization: 'Bearer ' + token}})
             .then(reload)
@@ -34,7 +34,7 @@ const AddItemModal = ({open, setOpen, loadData, itemName, link}) => {
 
     const handleKeyPress = (event) => {
         if(event.key === 'Enter') {
-            createLand(event)
+            createItem(event)
         }
     }
 
@@ -53,10 +53,10 @@ const AddItemModal = ({open, setOpen, loadData, itemName, link}) => {
             <div className="add-item-modal-content box" onClick={e => e.stopPropagation()}>
                 <h3 className="modal-header">{"Додати " + itemName + " до списку"}</h3>
                 <div className="modal-input">
-                    <label for="name">Назва:</label>
+                    <label>Назва:</label>
                     <input autoComplete="no" maxLength={32} type="text" id="name" value={name} onKeyPress={handleKeyPress} onChange={(event => setName(event.target.value))}/>
                 </div>
-                <button className="modal-button" onClick={createLand}>Підтвердити</button>
+                <button className="modal-button" onClick={createItem}>Підтвердити</button>
                 {errorCheck()}
             </div>
         </div>
