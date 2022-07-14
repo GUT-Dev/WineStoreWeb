@@ -33,32 +33,6 @@ const EditWineModal = ({open, setOpen, item}) => {
         statuses: [],
     });
 
-    // const defaultData = {
-    //     name: null,
-    //     img: null,
-    //     price: null,
-    //     discount: 0,
-    //     available: false,
-    //     availableStatus: null,
-    //     visible: true,
-    //     descriptions: null,
-    //     type: null,
-    //     sweetness: null,
-    //     strength: null,
-    //     sugarAmount: null,
-    //     ean: null,
-    //     brand: {
-    //         id: null,
-    //         name: null
-    //     },
-    //     land: {
-    //         id: null,
-    //         name: null
-    //     },
-    //     region: null,
-    //     amountForSale: 0,
-    // };
-
     const [data, setData] = useState(item);
 
     const update = () => {
@@ -110,8 +84,6 @@ const EditWineModal = ({open, setOpen, item}) => {
     useEffect(() => {
         if(open) {
             loadData();
-            debugger;
-            // setData({...data, item});
         }
     }, [open]);
 
