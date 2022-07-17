@@ -7,6 +7,8 @@ const Logout = () => {
 
     dispatch({type: "LOGOUT"})
     navigate("/");
+
+    return null;
 }
 
 export default Logout;

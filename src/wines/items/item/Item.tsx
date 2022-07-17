@@ -1,25 +1,31 @@
 import './Item.css';
 import {Link} from "react-router-dom";
 import checkImg from "../../../utils/DefaultImg";
+// @ts-ignore
 import defaultImg from "../../../resources/default_img.png"
+// @ts-ignore
 import addToCartIcon from '../../../resources/icons/add_to_cart.png'
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {convertAvailableStatus} from "../../../utils/StringConverter";
+import React, {SyntheticEvent} from "react";
+import {WineTable} from "../../../model/wine/Products";
 
 const WINE_PATH = "/wine/"
 
 const BASE_PATH = "http://localhost:8080"
 const ELEMENT_PATH = BASE_PATH + "/cart"
 
-const Item = (props) => {
+// @ts-ignore
+const Item = ({item}: {item : WineTable}) => {
+    // @ts-ignore
     const token = useSelector(state => state.jwtToken);
 
     const addToCart = () => {
         if(token) {
             axios.put(ELEMENT_PATH,
                 {
-                    wineId: props.item.id,
+                    wineId: item.id,
                     amount: 1
                 },
                 {
@@ -32,31 +38,31 @@ const Item = (props) => {
     }
 
     const getPrice = () => {
-        if(!props.item.available) {
+        if(!item.available) {
             return (
                 <div className="item-price-container">
-                    <p className="item-price-unavailable">{convertAvailableStatus(props.item.availableStatus)}</p>
+                    <p className="item-price-unavailable">{convertAvailableStatus(item.availableStatus)}</p>
                 </div>
             );
         }
-        if(props.item.discount === 0) {
+        if(item.discount === 0) {
             return (
                 <div className="item-price-container">
-                    <p className="item-price price">{props.item.price} грн</p>
+                    <p className="item-price price">{item.price} грн</p>
                 </div>
             );
         } else {
             return (
                 <div className="item-price-container">
-                    <h3 className="item-old-price"> {props.item.price}</h3>
-                    <p className="item-price sale">{props.item.priceWithSale} грн</p>
+                    <h3 className="item-old-price"> {item.price}</h3>
+                    <p className="item-price sale">{item.priceWithSale} грн</p>
                 </div>
             );
         }
     }
 
     const getButton = () => {
-        if(props.item.available) {
+        if(item.available) {
             return (
                 <div className="item-button" onClick={addToCart}>
                     <img src={addToCartIcon} alt="Add to cart icon"/>
@@ -66,7 +72,7 @@ const Item = (props) => {
     }
 
     const getRating = () => {
-        const rating = props.item.rating;
+        const rating = item.rating;
         return (
             <div className="item-rating">
                 {getStar(rating > 0)}
@@ -78,7 +84,7 @@ const Item = (props) => {
         )
     }
 
-    const getStar = (isChecked) => {
+    const getStar = (isChecked: boolean) => {
         if (isChecked) {
             return (<span className="fa fa-star checked-star"/>);
         } else {
@@ -86,22 +92,23 @@ const Item = (props) => {
         }
     }
 
-    function setDefaultImg(event) {
+    const setDefaultImg = (event : SyntheticEvent<HTMLImageElement, Event>) => {
+        // @ts-ignore
         event.target.src = defaultImg;
     }
 
     return (
-        <div className="item-container box" style={props.item.visible ? null : {border: "red 2px solid"}}>
-            {props.item.visible ? null : (
+        <div className="item-container box" style={item.visible ? undefined : {border: "red 2px solid"}}>
+            {item.visible ? null : (
                 <div className="not-available label">
                     <p>Приховано</p>
                 </div>
             )}
-            <Link className="item" to={WINE_PATH + props.item.id}>
+            <Link className="item" to={WINE_PATH + item.id}>
                 {getRating()}
-                <img onError={setDefaultImg} className="item-img" src={checkImg(props.item.img)} alt="wine icon"/>
+                <img onError={setDefaultImg} className="item-img" src={checkImg(item.img)} alt="wine icon"/>
                 <div className="item-descriptions">
-                    <h4 className="item-name">{props.item.name}</h4>
+                    <h4 className="item-name">{item.name}</h4>
                     {getPrice()}
                 </div>
             </Link>

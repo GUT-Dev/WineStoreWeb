@@ -2,11 +2,13 @@ import './Wine.css';
 import WineElement from "./WineElement/WineElement";
 import Reviews from "./Reviews/Reviews";
 
-export default function Wine(props) {
+const WinePage = ({id}: {id: bigint}) => {
     return (
         <div>
-            <WineElement id={props.id}/>
-            <Reviews id={props.id}/>
+            <WineElement id={id}/>
+            <Reviews wineId={id}/>
         </div>
     );
 }
+
+export default WinePage;

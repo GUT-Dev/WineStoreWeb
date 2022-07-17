@@ -1,54 +1,46 @@
 import './WineElement.css';
 import axios from "axios";
-import {useEffect, useState} from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import checkImg from "../../utils/DefaultImg";
+// @ts-ignore
 import addToCartIcon from '../../resources/icons/add_to_cart.png'
+// @ts-ignore
+import defaultImg from "../../resources/default_img.png";
+// @ts-ignore
+import editIcon from "../../resources/icons/edit_icon.png"
 import {convertType, convertSweetness, convertAvailableStatus} from '../../utils/StringConverter'
 import {useSelector} from "react-redux";
-import defaultImg from "../../resources/default_img.png";
-import editIcon from "../../resources/icons/edit_icon.png"
-import AddWineModal from "../../modals/EditWineModal/EditWineModal";
 import EditWineModal from "../../modals/EditWineModal/EditWineModal";
+import {getWine} from "../../API/productAPI";
+import {Wine} from "../../model/wine/Products";
 
 const BASE_PATH = "http://localhost:8080"
-const ELEMENT_PATH = BASE_PATH + "/wine/"
 const CART_PATH = BASE_PATH + "/cart"
 
-const WineElement = (props) => {
+const WineElement = ({id}: {id: bigint}) => {
+
+    // @ts-ignore
     const token = useSelector(state => state.jwtToken);
+    // @ts-ignore
     const roles = useSelector(state => state.user.roles);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    let [state, setState] = useState({
-            error: null,
-            isLoaded: false,
-            item: []
-        }
-    )
+    // @ts-ignore
+    const [item, setItem] = useState<Wine>({});
+    const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
-    useEffect(
-        () => {
-            axios.get(ELEMENT_PATH + props.id)
-                .then(
-                    (result) => {
-                        setState({
-                            ...state,
-                            isLoaded: true,
-                            item: result.data
-                        });
-                    },
-                    (error) => {
-                        setState({
-                            ...state,
-                            isLoaded: true,
-                            error
-                        });
-                    }
-                )
-        }, [props, !editModalOpen]
+    useEffect(() => {
+            // @ts-ignore
+        getWine(id)
+                .then(r => {
+                    debugger;
+                        setIsLoaded(true);
+                        setItem(r);
+                })
+        }, [id, !editModalOpen]
     );
 
     const getRating = () => {
-        const rating = state.item.rating;
+        const rating = item.rating;
         return (
             <div className="wine-element-rating">
                 {getStar(rating > 0)}
@@ -60,7 +52,7 @@ const WineElement = (props) => {
         )
     }
 
-    const getStar = (isChecked) => {
+    const getStar = (isChecked: boolean) => {
         if(isChecked) {
             return (<span className="fa fa-star wine-element-star checked-star"/>);
         } else {
@@ -69,30 +61,30 @@ const WineElement = (props) => {
     }
 
     const getPrice = () => {
-        if(!state.item.available) {
+        if(!item.available) {
             return (
                 <div className="price-container">
-                    <h4 className="wine-unavailable">{convertAvailableStatus(state.item.availableStatus)}</h4>
+                    <h4 className="wine-unavailable">{convertAvailableStatus(item.availableStatus)}</h4>
                 </div>
             );
-        } else if (state.item.discount === 0) {
+        } else if (item.discount === 0) {
             return (
                 <div className="price-container">
-                    <h4 className="wine-price price">{state.item.price} грн.</h4>
+                    <h4 className="wine-price price">{item.price} грн.</h4>
                 </div>
             );
         } else {
             return (
                 <div className="price-container">
-                    <h3 className="old-price"> {state.item.price}</h3>
-                    <h4 className="wine-price sale">{state.item.priceWithSale} грн.</h4>
+                    <h3 className="old-price"> {item.price}</h3>
+                    <h4 className="wine-price sale">{item.priceWithSale} грн.</h4>
                 </div>
             );
         }
     }
 
     const getButton = () => {
-        if (state.item.available) {
+        if (item.available) {
             return (
                 <div className="wine-element-button" onClick={addToCart}>
                     <img src={addToCartIcon} alt="Add to cart icon"/>
@@ -105,7 +97,7 @@ const WineElement = (props) => {
         if (token) {
             axios.put(CART_PATH,
                 {
-                    wineId: props.id,
+                    wineId: id,
                     amount: 1
                 },
                 {
@@ -117,22 +109,21 @@ const WineElement = (props) => {
         }
     }
 
-    function setDefaultImg(event) {
+    function setDefaultImg(event: SyntheticEvent<HTMLImageElement, Event>) {
+        // @ts-ignore
         event.target.src = defaultImg;
     }
 
-    if (state.error) {
-        return (<p> Error {state.error.message}</p>)
-    } else if (!state.isLoaded) {
-        return (<p> Зaгрузка....</p>)
+    if (!isLoaded) {
+        return null;
     } else {
         return (
             <div className="wine-element">
                 <div className="wine-element-item">
                     {getRating()}
                     <div className="wine-img-container">
-                        <img onError={setDefaultImg} src={checkImg(state.item.img)} alt="wine logo"/>
-                        {state.item.visible ? null : (
+                        <img onError={setDefaultImg} src={checkImg(item.img)} alt="wine logo"/>
+                        {item.visible ? null : (
                             <div className="not-available label">
                                 <p>Приховано</p>
                             </div>
@@ -144,23 +135,23 @@ const WineElement = (props) => {
                                 <img src={editIcon} alt="edit icon"/>
                             </div>
                         ) : null}
-                        <h3 id="wine-name" className="item-name">{state.item.name}</h3>
-                        <p>Тип напою: {convertType(state.item.type)}</p>
-                        <p>Бренд: {state.item.brand.name}</p>
-                        <p>Країна: {state.item.land.name}</p>
-                        <p>Солодкість: {convertSweetness(state.item.sweetness)}</p>
-                        <p>Міцність: {state.item.strength}%</p>
+                        <h3 id="wine-name" className="item-name">{item.name}</h3>
+                        <p>Тип напою: {convertType(item.type)}</p>
+                        <p>Бренд: {item.brand.name}</p>
+                        <p>Країна: {item.land.name}</p>
+                        <p>Солодкість: {convertSweetness(item.sweetness)}</p>
+                        <p>Міцність: {item.strength}%</p>
                         {getButton()}
                         {getPrice()}
                     </div>
                 </div>
                 <div className="additional-info box">
-                    <p>Регіон: {state.item.region}</p>
-                    <p>Вміст цукру: {state.item.sugarAmount} гр/л</p>
-                    <p>Опис: {state.item.descriptions}</p>
+                    <p>Регіон: {item.region}</p>
+                    <p>Вміст цукру: {item.sugarAmount} гр/л</p>
+                    <p>Опис: {item.descriptions}</p>
                 </div>
 
-                <EditWineModal open={editModalOpen} setOpen={setEditModalOpen} item={state.item} />
+                <EditWineModal open={editModalOpen} setOpen={setEditModalOpen} item={item} />
             </div>
         );
     }

@@ -2,7 +2,7 @@ import './App.css';
 import Header from "./common/Header";
 import Wines from "./wines/Wines";
 import Footer from "./common/Footer";
-import Wine from "./wine/Wine";
+import WinePage from "./wine/WinePage";
 import {Route, useParams} from "react-router-dom";
 import {Routes} from "react-router";
 import RegistrationForm from "./auth/registration/RegistrationForm";
@@ -18,7 +18,9 @@ import UserPage from "./user/userPage/UserPage";
 
 const App = () => {
 
+    // @ts-ignore
     const permissions = useSelector(state => state.user.roles);
+    // @ts-ignore
     const authorised = useSelector(state => state.authorised);
 
     const managerPanel = () => {
@@ -32,10 +34,10 @@ const App = () => {
             <Header/>
             {managerPanel()}
             <Routes>
-                <Route path={"/"} element={<Wines/>}/>
+                <Route path={"/"} element={<Wines />}/>
                 <Route path={"/wine/:id"} element={<WineEl/>}/>
                 <Route path={"/auth"} element={<Authorisation/>}/>
-                <Route path={"/logout"} element={<Logout/>}/>
+                <Route path={"/logout"} element={<Logout />}/>
                 <Route path={"/registration"} element={<RegistrationForm/>}/>
                 {authorised ? <Route path={"/cart"} element={<Cart/>}/> : null}
                 {authorised ? <Route path={"/salesHistory"} element={<SalesHistory/>}/> : null}
@@ -49,8 +51,8 @@ const App = () => {
     );
 
     function WineEl() {
-        let {id} = useParams();
-        return (<Wine id={id}/>);
+        let id = useParams();
+        return (<WinePage id={id as unknown as bigint}/>);
     }
 }
 

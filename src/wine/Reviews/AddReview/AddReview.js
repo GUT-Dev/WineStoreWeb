@@ -25,6 +25,7 @@ const AddReview = (props) => {
         )
             .finally()
 
+        debugger;
         props.update();
     }
 

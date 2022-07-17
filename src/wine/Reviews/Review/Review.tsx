@@ -1,7 +1,7 @@
 import './Review.css';
+import {CustomerReview} from "../../../model/wine/CustomerReview";
 
-const Review = (props) => {
-    let item = props.item;
+const Review = ({item}: {item: CustomerReview}) => {
 
     const getRating = () => {
         const rating = item.rating;
@@ -16,7 +16,7 @@ const Review = (props) => {
         )
     }
 
-    const getStar = (isChecked) => {
+    const getStar = (isChecked: boolean) => {
         if(isChecked) {
             return (<span className="fa fa-star checked-star"/>);
         } else {

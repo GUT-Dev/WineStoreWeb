@@ -3,33 +3,30 @@ import Items from "./items/Items";
 import Nav from "./nav/Nav";
 import {useCallback, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import axios from "axios";
+import {getMaxPrice, getMinPrice} from "../API/productAPI";
+import {Filters, Price} from "../model/wine/Filters";
 
 export const sweetnessTypes = [ "EXTRA_DRY", "DRY", "MEDIUM", "SWEET", "VERY_SWEET" ];
 export const wineTypes = [ "WHITE", "RED", "ROSE", "SPARKLING", "FORTIFIED" ];
 
-const GET_MAX_PRICE = "http://localhost:8080/wine/max-price";
-const GET_MIN_PRICE = "http://localhost:8080/wine/min-price";
-
-const Wines = (props) => {
+const Wines = (props: any) => {
     let [loaded, setLoaded] = useState(false);
-    let [filters, setFilters] = useState({
+    let [filters, setFilters] = useState<Filters>({
         sweetness: [],
         type: [],
         price: {
-            min: null,
-            max: null
+            min: 0,
+            max: 100000,
         },
-        hasDiscount: null,
-        includeNotVisible: null
+        hasDiscount: undefined,
+        includeNotVisible: undefined
     });
+    // @ts-ignore
     let searchByName = useSelector(state => state.searchByName);
 
     const load = useCallback(async () => {
-        let minPrice = await axios.get(GET_MIN_PRICE)
-            .then(r => r.data);
-        let maxPrice = await axios.get(GET_MAX_PRICE)
-            .then(r => r.data);
+        let minPrice = await getMinPrice();
+        let maxPrice = await getMaxPrice();
         setFilters({...filters, price: {min: minPrice, max: maxPrice}});
         setLoaded(true);
     }, [])
@@ -38,7 +35,7 @@ const Wines = (props) => {
         load();
     }, [props])
 
-    const submit = (value) => {
+    const submit = (value: Price) => {
         setFilters(filters => {
             return {
                 ...filters,
@@ -50,7 +47,7 @@ const Wines = (props) => {
         })
     }
 
-    const changeFilter = (param) => {
+    const changeFilter = (param: any) => {
         if(param.checked) {
             addFilter(param.id)
         } else {
@@ -58,7 +55,7 @@ const Wines = (props) => {
         }
     }
 
-    const addFilter = (param) => {
+    const addFilter = (param: string) => {
         if (param === "discount") {
             setFilters(filters => {
                     return {
@@ -91,12 +88,12 @@ const Wines = (props) => {
         }
     }
 
-    const removeFilter = (param) => {
+    const removeFilter = (param: string) => {
         if (param === "discount") {
             setFilters(filters => {
                     return {
                         ...filters,
-                        hasDiscount: null
+                        hasDiscount: undefined
                     }
                 }
             )
@@ -104,16 +101,17 @@ const Wines = (props) => {
             setFilters(filters => {
                 return {
                     ...filters,
-                    includeNotVisible: null
+                    includeNotVisible: undefined
                 }
             })
         } else if (sweetnessTypes.includes(param)) {
             let id = filters.sweetness.indexOf(param);
+            // @ts-ignore
             filters.sweetness.splice(id, 1);
             setFilters(value => {
                 return {
                     ...value,
-                    sweetness: [...filters.sweetness]
+                    sweetness: [...filters?.sweetness]
                 }
             })
         } else if (wineTypes.includes(param)) {
@@ -122,13 +120,14 @@ const Wines = (props) => {
             setFilters(value => {
                 return {
                     ...value,
-                    type: [...filters.type]
+                    type: [...filters?.type]
                 }
             })
         }
     }
 
-    const crateQueryParams = (filters) => {
+    // @ts-ignore
+    const crateQueryParams = (filters: Filters) => {
         let queryParams = '?'
 
         if(searchByName != null) {
@@ -140,14 +139,14 @@ const Wines = (props) => {
         if(filters.includeNotVisible != null) {
             queryParams = queryParams.concat('includeNotVisible=' + filters.includeNotVisible + '&')
         }
-        if(filters.sweetness.length > 0) {
-            queryParams = queryParams.concat('sweetness=' + filters.sweetness + '&');
+        if(filters?.sweetness?.length > 0) {
+            queryParams = queryParams.concat('sweetness=' + filters?.sweetness + '&');
         }
-        if(filters.type.length > 0) {
-            queryParams = queryParams.concat('type=' + filters.type + '&');
+        if(filters?.type?.length > 0) {
+            queryParams = queryParams.concat('type=' + filters?.type + '&');
         }
-        if(filters.price.min != null && filters.price.max != null) {
-            queryParams = queryParams.concat('minPrice=' + filters.price.min + '&maxPrice=' + filters.price.max + '&')
+        if(filters?.price?.min != null && filters?.price?.max != null) {
+            queryParams = queryParams.concat('minPrice=' + filters?.price?.min + '&maxPrice=' + filters?.price?.max + '&')
         }
 
         return queryParams.length > 1
@@ -158,7 +157,7 @@ const Wines = (props) => {
     if(loaded) {
         return (
             <div className="wines">
-                <Nav changeFilter={changeFilter} price={filters.price} submit={submit}/>
+                <Nav changeFilter={changeFilter} price={filters!.price} submit={submit}/>
                 <Items filters={crateQueryParams(filters)}/>
             </div>
         );
