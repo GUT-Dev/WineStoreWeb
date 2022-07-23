@@ -99,7 +99,7 @@ const Header = () => {
 
     return (
         <div>
-            <header className="box">
+            <header className="heeader">
                 <Link to="/">
                     <img className="header-logo" alt="Header logo" src={logo}/>
                 </Link>

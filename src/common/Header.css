@@ -1,21 +1,22 @@
 header {
     width: inherit;
-    height: 80px;
+    height: 70px;
     display: flex;
     flex-direction: row;
     margin-bottom: 5px;
     position: relative;
+    background-color: #E7E5E5;
 }
 
 .header-logo {
     margin: 5px 15px;
-    height: 70px;
+    height: 65px;
     width: auto;
 }
 
 .header-account-img {
     position: absolute;
-    right: 70px;
+    right: 50px;
 }
 
 .header-cart-img {
@@ -27,29 +28,29 @@ header {
     cursor: pointer;
     height: 34px;
     width: 34px;
-    margin: 23px
+    margin: 18px 2%;
 }
 
 .cart-icon:hover {
     height: 36px;
     width: 36px;
-    margin: 22px;
+    margin: 17px 1.9%;
     transition-duration: 0.1s;
 }
 
 .cart-icon:active {
     height: 34px;
     width: 34px;
-    margin: 23px;
+    margin: 18px 2%;
     transition-duration: 0.05s;
 }
 
 .search-container {
-    height: 38px;
-    width: 386px;
+    height: 30px;
+    width: 40%;
     display: flex;
     flex-direction: row;
-    margin: 18px 0 22px 250px;
+    margin: 18px auto 22px auto;
     border: #ff5000 2px solid;
     border-radius: 25px;
     padding: 0;
@@ -57,8 +58,8 @@ header {
 
 .search-input {
     margin: 0;
-    height: 35px;
-    width: 350px;
+    height: 28px;
+    width: 100%;
     background: none;
     border: none;
     font-size: 1em;
@@ -80,7 +81,7 @@ header {
 .search-icon img {
     height: 25px;
     width: 25px;
-    margin: 5px 10px 5px 0;
+    margin: 2px 5px 2px 0;
 }
 
 .dropdown-block {
