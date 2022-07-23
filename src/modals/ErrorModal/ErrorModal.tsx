@@ -1,6 +1,6 @@
 import "./ErrorModalAnimation.scss"
 
-const ErrorModal = ({open, setOpen, text, descriptions}) => {
+const ErrorModal = ({open, setOpen, text, descriptions}: {open: boolean, setOpen: Function, text: string | undefined, descriptions: string | undefined}) => {
     return (
         <div className={open ? "modal open" : "modal"} onClick={() => setOpen(false)}>
             <div className="success-modal-content" onClick={e => e.stopPropagation()}>
