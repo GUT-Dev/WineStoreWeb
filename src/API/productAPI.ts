@@ -13,7 +13,7 @@ export const getMinPrice = async () => {
         .then(r => r.data);
 }
 
-export const getWine = async ({id}: {id: bigint}) => {
+export const getWine = async (id: bigint) => {
     return await axios.get(rootPath + "/" + id)
         .then(r => r.data)
 }

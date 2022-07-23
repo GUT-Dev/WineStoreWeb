@@ -8,11 +8,12 @@ import {CustomerReview} from "../../model/wine/CustomerReview";
 const Reviews = ({wineId}: {wineId: bigint}) => {
     const [items, setItems] = useState<CustomerReview []>([]);
 
-    useEffect(() => {
-        // @ts-ignore
+    useEffect(() => reload(), [wineId])
+
+    const reload = () => {
         getReviewsForWine(wineId)
             .then(r => setItems(r))
-    }, [wineId])
+    }
 
     const reviewHeader = () => {
         if (items.length > 0) {
@@ -28,7 +29,7 @@ const Reviews = ({wineId}: {wineId: bigint}) => {
             {items.map(item =>
                 <Review item={item}/>
             )}
-            <AddReview id={wineId} update={getReviewsForWine.bind(this)}/>
+            <AddReview id={wineId} reload={reload}/>
         </div>
     );
 

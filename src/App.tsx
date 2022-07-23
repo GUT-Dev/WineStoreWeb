@@ -51,8 +51,9 @@ const App = () => {
     );
 
     function WineEl() {
-        let id = useParams();
-        return (<WinePage id={id as unknown as bigint}/>);
+        const params = useParams();
+        // @ts-ignore
+        return (<WinePage id={params.id as bigint}/>);
     }
 }
 

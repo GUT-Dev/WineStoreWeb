@@ -1,5 +1,4 @@
 import './WineElement.css';
-import axios from "axios";
 import React, {SyntheticEvent, useEffect, useState} from "react";
 import checkImg from "../../utils/DefaultImg";
 // @ts-ignore
@@ -13,14 +12,12 @@ import {useSelector} from "react-redux";
 import EditWineModal from "../../modals/EditWineModal/EditWineModal";
 import {getWine} from "../../API/productAPI";
 import {Wine} from "../../model/wine/Products";
-
-const BASE_PATH = "http://localhost:8080"
-const CART_PATH = BASE_PATH + "/cart"
+import {putInCart} from "../../API/cartAPI";
 
 const WineElement = ({id}: {id: bigint}) => {
 
     // @ts-ignore
-    const token = useSelector(state => state.jwtToken);
+    const token: string = useSelector(state => state.jwtToken);
     // @ts-ignore
     const roles = useSelector(state => state.user.roles);
     const [editModalOpen, setEditModalOpen] = useState(false);
@@ -29,10 +26,8 @@ const WineElement = ({id}: {id: bigint}) => {
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-            // @ts-ignore
         getWine(id)
                 .then(r => {
-                    debugger;
                         setIsLoaded(true);
                         setItem(r);
                 })
@@ -95,17 +90,10 @@ const WineElement = ({id}: {id: bigint}) => {
 
     const addToCart = () => {
         if (token) {
-            axios.put(CART_PATH,
-                {
-                    wineId: id,
-                    amount: 1
-                },
-                {
-                    headers: {Authorization: 'Bearer ' + token}
-                })
-                .finally()
+            putInCart(id, 1, token)
+                    .finally();
         } else {
-            alert("Перед покупками потрібна авторизація")
+            alert("Перед покупками потрібна авторизація");
         }
     }
 

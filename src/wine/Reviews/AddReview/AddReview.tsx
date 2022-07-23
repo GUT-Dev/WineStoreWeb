@@ -1,39 +1,28 @@
 import './AddReview.scss';
 import {useState} from "react";
-import axios from "axios";
 import {useSelector} from "react-redux";
+import {addReViewForWine} from "../../../API/reviewAPI";
 
-const BASE_PATH = "http://localhost:8080"
-const ADD_REVIEW_PATH = BASE_PATH + "/review/add"
+const AddReview = ({id, reload}: {id: bigint, reload: VoidFunction}) => {
 
-const AddReview = (props) => {
+    // @ts-ignore
     const token = useSelector(state => state.jwtToken);
-    let [ rating, setRating ] = useState(3);
-    let [ review, setReview ] = useState('');
 
-    async function addReview() {
-        let data = {
-            wineId: props.id,
-            message: review,
-            rating: rating
-        }
+    const [ rating, setRating ] = useState<number>(3);
+    const [ review, setReview ] = useState<string>('');
 
-        await axios.post(ADD_REVIEW_PATH, data,
-            {
-                headers: {Authorization: 'Bearer ' + token}
-            }
-        )
-            .finally()
+    const addReview = async () => {
+        await addReViewForWine({wineId: id, message: review, rating: rating}, token)
+            .finally();
 
-        debugger;
-        props.update();
+        reload();
     }
 
     if (token) {
         return (
             <div className="add-review-main box">
                 <h3 className="add-review-header">Додати відгук</h3>
-                <textarea maxLength="180" className="add-review-textarea"
+                <textarea maxLength={180} className="add-review-textarea"
                           onChange={(e) => setReview(e.target.value)}>{review}</textarea>
                 <div className="add-review-buttons">
                     <div className="rating-holder">
